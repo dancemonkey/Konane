@@ -14,6 +14,10 @@
 		106F9A371BDB25240061A59A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A351BDB25240061A59A /* Main.storyboard */; };
 		106F9A391BDB25240061A59A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A381BDB25240061A59A /* Assets.xcassets */; };
 		106F9A3C1BDB25240061A59A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A3A1BDB25240061A59A /* LaunchScreen.storyboard */; };
+		106F9A441BDB2D940061A59A /* board.png in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A431BDB2D940061A59A /* board.png */; settings = {ASSET_TAGS = (); }; };
+		106F9A471BDB3A5C0061A59A /* Stone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A461BDB3A5C0061A59A /* Stone.swift */; settings = {ASSET_TAGS = (); }; };
+		106F9A491BDB3E7C0061A59A /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A481BDB3E7C0061A59A /* tile.png */; settings = {ASSET_TAGS = (); }; };
+		106F9A4D1BDB4C490061A59A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A4C1BDB4C490061A59A /* Board.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,10 @@
 		106F9A381BDB25240061A59A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		106F9A3B1BDB25240061A59A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		106F9A3D1BDB25240061A59A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		106F9A431BDB2D940061A59A /* board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = board.png; path = "Game Art/board.png"; sourceTree = "<group>"; };
+		106F9A461BDB3A5C0061A59A /* Stone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stone.swift; sourceTree = "<group>"; };
+		106F9A481BDB3E7C0061A59A /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = "Game Art/tile.png"; sourceTree = "<group>"; };
+		106F9A4C1BDB4C490061A59A /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Board.swift; path = ../Board.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +50,7 @@
 		106F9A211BDB25240061A59A = {
 			isa = PBXGroup;
 			children = (
+				106F9A451BDB2DCA0061A59A /* Artwork */,
 				106F9A2C1BDB25240061A59A /* Konane */,
 				106F9A2B1BDB25240061A59A /* Products */,
 			);
@@ -60,6 +69,8 @@
 			children = (
 				106F9A2D1BDB25240061A59A /* AppDelegate.swift */,
 				106F9A2F1BDB25240061A59A /* GameScene.sks */,
+				106F9A4C1BDB4C490061A59A /* Board.swift */,
+				106F9A461BDB3A5C0061A59A /* Stone.swift */,
 				106F9A311BDB25240061A59A /* GameScene.swift */,
 				106F9A331BDB25240061A59A /* GameViewController.swift */,
 				106F9A351BDB25240061A59A /* Main.storyboard */,
@@ -68,6 +79,15 @@
 				106F9A3D1BDB25240061A59A /* Info.plist */,
 			);
 			path = Konane;
+			sourceTree = "<group>";
+		};
+		106F9A451BDB2DCA0061A59A /* Artwork */ = {
+			isa = PBXGroup;
+			children = (
+				106F9A481BDB3E7C0061A59A /* tile.png */,
+				106F9A431BDB2D940061A59A /* board.png */,
+			);
+			name = Artwork;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -130,7 +150,9 @@
 				106F9A301BDB25240061A59A /* GameScene.sks in Resources */,
 				106F9A3C1BDB25240061A59A /* LaunchScreen.storyboard in Resources */,
 				106F9A391BDB25240061A59A /* Assets.xcassets in Resources */,
+				106F9A441BDB2D940061A59A /* board.png in Resources */,
 				106F9A371BDB25240061A59A /* Main.storyboard in Resources */,
+				106F9A491BDB3E7C0061A59A /* tile.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,7 +165,9 @@
 			files = (
 				106F9A321BDB25240061A59A /* GameScene.swift in Sources */,
 				106F9A341BDB25240061A59A /* GameViewController.swift in Sources */,
+				106F9A4D1BDB4C490061A59A /* Board.swift in Sources */,
 				106F9A2E1BDB25240061A59A /* AppDelegate.swift in Sources */,
+				106F9A471BDB3A5C0061A59A /* Stone.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
