@@ -49,6 +49,8 @@ class Stone: SKNode {
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    self.removeFromParent()
+    if (scene as! GameScene).jumpIsPossible((self.column, self.row)) {
+      print("jumped")
+    }
   }
 }
