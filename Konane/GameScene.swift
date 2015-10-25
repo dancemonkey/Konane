@@ -22,8 +22,9 @@ enum JumpDirections {
 class GameScene: SKScene {
   
   let stoneSize = CGSizeMake(50, 50)
-  var stones = [[Stone]]()
+  var stones = [[Stone?]]()
   let board = Board()
+  var indicators = [SKShapeNode]()
   
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -54,38 +55,92 @@ class GameScene: SKScene {
     
   }
   
-  func jumpIsPossible(fromSquare: (row: Int,column: Int)) -> Bool {
-    
-    // PASS THROUGH STONES AND REMOVE INDICATOR DOTS, PUT THIS INTO ANOTHER FUNCTION
-    for row in stones {
-      for stone in row {
-        for child in stone.children {
-          if child.name == "indicator dot" {
-            child.removeFromParent()
-          }
-        }
-      }
+  func removeIndicators() {
+    for (index,dot) in indicators.enumerate() {
+      dot.removeFromParent()
     }
-    let originSquare = stones[fromSquare.row][fromSquare.column]
+    if indicators.count > 0 {
+      indicators.removeRange(0...indicators.count-1)
+    }
+  }
+  
+  func jumpIsPossible(fromSquare: (column: Int,row: Int)) -> Bool {
+    
+    //let originSquare = [fromSquare.column][fromSquare.row]
+    
+    var adjacentSquaresToTest = [(column: Int,row: Int)]()
+    adjacentSquaresToTest.append((fromSquare.column, fromSquare.row+1)) // North
+    adjacentSquaresToTest.append((fromSquare.column, fromSquare.row-1)) // South
+    adjacentSquaresToTest.append((fromSquare.column+1, fromSquare.row)) // East
+    adjacentSquaresToTest.append((fromSquare.column-1, fromSquare.row)) // West
+    
+    // PASS THROUGH STONES AND REMOVE INDICATOR DOTS
+    removeIndicators()
     
     // FIRST TEST TO SEE IF ADJACENT SQUARES ARE OCCUPIED
-    var neighborSquares = [Stone]()
-    neighborSquares.append(stones[fromSquare.row][fromSquare.column+1]) // North
-    neighborSquares.append(stones[fromSquare.row][fromSquare.column-1]) // South
-    neighborSquares.append(stones[fromSquare.row+1][fromSquare.column]) // East
-    neighborSquares.append(stones[fromSquare.row-1][fromSquare.column]) // West
-    
-    for stone in neighborSquares {
-      let dot = SKShapeNode(ellipseOfSize: CGSizeMake(5, 5))
-      dot.fillColor = UIColor.redColor()
-      dot.name = "indicator dot"
-      stone.addChild(dot)
+    var occupiedSquares = [Stone]()
+    for square in adjacentSquaresToTest {
+      if stoneExists(square) {
+        occupiedSquares.append(stones[square.column][square.row]!)
+      }
+    }
+    if occupiedSquares.count == 0 {
+      return false
     }
     
-    // NEXT IF OCCUPIED SQUARE IS FOUND, TEST SQUARE BEYOND, IF EMPTY THEN INDICATE POSSIBLE JUMP BY RETURNING TRUE
+    // TEMP INDICATOR DOT TO ENSURE IT'S PROPERLY TESTING ADJACENT SQUARES
+    for square in occupiedSquares {
+      let dot = SKShapeNode(rectOfSize: CGSizeMake(43, 43))
+      dot.strokeColor = UIColor.redColor()
+      dot.name = "indicator dot"
+      square.addChild(dot)
+      indicators.append(dot)
+    }
+    
+    // NEXT IF OCCUPIED SQUARES ARE FOUND, TEST SQUARE BEYOND, IF EMPTY THEN INDICATE POSSIBLE JUMP BY RETURNING TRUE
+    let (originX, originY) = (fromSquare.column, fromSquare.row)
+    var direction: JumpDirections
+    for square in occupiedSquares {
+      if square.column > originX {
+        direction = .East
+      } else if square.column < originX {
+        direction = .West
+      } else if square.row > originY {
+        direction = .North
+      } else {
+        direction = .South
+      }
+      if isEmpty((square.column, square.row), direction: direction) {
+        // indicate you can jump here
+      } else {
+        // don't do shit
+      }
+    }
+    
     // THEN ADD NEW FUNCTION (TO STONE?) TO ALLOW ACTUAL MOVE TO INDICATED SQUARES
     
     return true
+  }
+  
+  func stoneExists(atSquare: (column: Int, row: Int)) -> Bool {
+    let (c,r) = (atSquare.column, atSquare.row)
+    return stones[c][r] != nil
+  }
+  
+  // REFACTOR THIS TO FIND AND RETURN EMPTY SQUARES RATHER THAN RETURN A BOOL
+  func isEmpty(atSquare: (column: Int, row: Int), direction: JumpDirections) -> Bool {
+    var (c,r) = (atSquare.column, atSquare.row)
+    switch direction {
+    case .North:
+      r++
+    case .South:
+      r--
+    case .East:
+      c++
+    case .West:
+      c--
+    }
+    return stones[c][r] == nil
   }
   
   func getNextColor(forColor currentColor: StoneColor) -> StoneColor {
@@ -98,10 +153,6 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
-        
-        for touch in touches {
-            
-        }
     }
    
     override func update(currentTime: CFTimeInterval) {
