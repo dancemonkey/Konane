@@ -51,11 +51,11 @@ class Stone: SKNode {
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     let coord = (self.column, self.row)
     if (scene as! GameScene).jumpIsPossible(coord) {
-      
+      // NOW WRITE CODE TO READ VALID MOVES AND ALLOW PIECE TO MOVE THERE WITH ANOTHER TAP
     }
     
     // REMEMBER BELOW TO USE FOR REMOVING STONE FROM BOARD AND FROM SCENE, WHILE RETAINING ARRAY STRUCTURE
-    (scene as! GameScene).stones[self.column][self.row] = nil
-    self.removeFromParent()
+    //(scene as! GameScene).stones[self.column][self.row] = nil
+    //self.removeFromParent()
   }
 }

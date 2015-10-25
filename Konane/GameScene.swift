@@ -56,7 +56,7 @@ class GameScene: SKScene {
   }
   
   func removeIndicators() {
-    for (index,dot) in indicators.enumerate() {
+    for dot in indicators {
       dot.removeFromParent()
     }
     if indicators.count > 0 {
@@ -74,7 +74,7 @@ class GameScene: SKScene {
     adjacentSquaresToTest.append((fromSquare.column+1, fromSquare.row)) // East
     adjacentSquaresToTest.append((fromSquare.column-1, fromSquare.row)) // West
     
-    // PASS THROUGH STONES AND REMOVE INDICATOR DOTS
+    // PASS THROUGH BOARD AND REMOVE INDICATOR RECTS
     removeIndicators()
     
     // FIRST TEST TO SEE IF ADJACENT SQUARES ARE OCCUPIED
@@ -86,15 +86,6 @@ class GameScene: SKScene {
     }
     if occupiedSquares.count == 0 {
       return false
-    }
-    
-    // TEMP INDICATOR DOT TO ENSURE IT'S PROPERLY TESTING ADJACENT SQUARES
-    for square in occupiedSquares {
-      let dot = SKShapeNode(rectOfSize: CGSizeMake(43, 43))
-      dot.strokeColor = UIColor.redColor()
-      dot.name = "indicator dot"
-      square.addChild(dot)
-      indicators.append(dot)
     }
     
     // NEXT IF OCCUPIED SQUARES ARE FOUND, TEST SQUARE BEYOND, IF EMPTY THEN INDICATE POSSIBLE JUMP BY RETURNING TRUE
@@ -110,10 +101,9 @@ class GameScene: SKScene {
       } else {
         direction = .South
       }
-      if isEmpty((square.column, square.row), direction: direction) {
-        // indicate you can jump here
-      } else {
-        // don't do shit
+      let (c,r) = directionModifier((square.column,square.row), direction: direction)
+      if isEmpty((c,r)) {
+        placeValidMoveIndicator((c,r))
       }
     }
     
@@ -122,14 +112,24 @@ class GameScene: SKScene {
     return true
   }
   
+  func placeValidMoveIndicator(atSquare: (column: Int, row: Int)) {
+    let (c,r) = (atSquare.column, atSquare.row)
+    let dot = SKShapeNode(rectOfSize: CGSizeMake(43, 43))
+    dot.strokeColor = UIColor.redColor()
+    dot.name = "indicator dot"
+    dot.position = CGPointMake(CGFloat(c*board.gridSize), CGFloat(r*board.gridSize))
+    dot.zPosition = 15
+    addChild(dot)
+    indicators.append(dot)
+  }
+  
   func stoneExists(atSquare: (column: Int, row: Int)) -> Bool {
     let (c,r) = (atSquare.column, atSquare.row)
     return stones[c][r] != nil
   }
   
-  // REFACTOR THIS TO FIND AND RETURN EMPTY SQUARES RATHER THAN RETURN A BOOL
-  func isEmpty(atSquare: (column: Int, row: Int), direction: JumpDirections) -> Bool {
-    var (c,r) = (atSquare.column, atSquare.row)
+  func directionModifier(startingCoordinates: (column: Int, row: Int), direction: JumpDirections) -> (c: Int, r: Int) {
+    var (c,r) = (startingCoordinates.column, startingCoordinates.row)
     switch direction {
     case .North:
       r++
@@ -140,6 +140,11 @@ class GameScene: SKScene {
     case .West:
       c--
     }
+    return (c,r)
+  }
+  
+  func isEmpty(atSquare: (column: Int, row: Int)) -> Bool {
+    let (c,r) = (atSquare.column, atSquare.row)
     return stones[c][r] == nil
   }
   
