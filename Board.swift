@@ -11,7 +11,7 @@ import SpriteKit
 class Board: SKNode {
   private var width = 10
   private var height = 10
-  let gridSize = 50
+  let gridSize = 75
   
   override init() {
     super.init()

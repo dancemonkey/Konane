@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		103610891BDF218200E4C146 /* blackStone.png in Resources */ = {isa = PBXBuildFile; fileRef = 103610871BDF218200E4C146 /* blackStone.png */; };
+		1036108A1BDF218200E4C146 /* whiteStone.png in Resources */ = {isa = PBXBuildFile; fileRef = 103610881BDF218200E4C146 /* whiteStone.png */; };
 		106F9A2E1BDB25240061A59A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A2D1BDB25240061A59A /* AppDelegate.swift */; };
 		106F9A301BDB25240061A59A /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A2F1BDB25240061A59A /* GameScene.sks */; };
 		106F9A321BDB25240061A59A /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A311BDB25240061A59A /* GameScene.swift */; };
@@ -14,13 +16,14 @@
 		106F9A371BDB25240061A59A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A351BDB25240061A59A /* Main.storyboard */; };
 		106F9A391BDB25240061A59A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A381BDB25240061A59A /* Assets.xcassets */; };
 		106F9A3C1BDB25240061A59A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A3A1BDB25240061A59A /* LaunchScreen.storyboard */; };
-		106F9A441BDB2D940061A59A /* board.png in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A431BDB2D940061A59A /* board.png */; settings = {ASSET_TAGS = (); }; };
-		106F9A471BDB3A5C0061A59A /* Stone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A461BDB3A5C0061A59A /* Stone.swift */; settings = {ASSET_TAGS = (); }; };
-		106F9A491BDB3E7C0061A59A /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A481BDB3E7C0061A59A /* tile.png */; settings = {ASSET_TAGS = (); }; };
-		106F9A4D1BDB4C490061A59A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A4C1BDB4C490061A59A /* Board.swift */; settings = {ASSET_TAGS = (); }; };
+		106F9A471BDB3A5C0061A59A /* Stone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A461BDB3A5C0061A59A /* Stone.swift */; };
+		106F9A491BDB3E7C0061A59A /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A481BDB3E7C0061A59A /* tile.png */; };
+		106F9A4D1BDB4C490061A59A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A4C1BDB4C490061A59A /* Board.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		103610871BDF218200E4C146 /* blackStone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blackStone.png; path = "Game Art/blackStone.png"; sourceTree = "<group>"; };
+		103610881BDF218200E4C146 /* whiteStone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = whiteStone.png; path = "Game Art/whiteStone.png"; sourceTree = "<group>"; };
 		106F9A2A1BDB25240061A59A /* Konane.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Konane.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		106F9A2D1BDB25240061A59A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		106F9A2F1BDB25240061A59A /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -30,7 +33,6 @@
 		106F9A381BDB25240061A59A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		106F9A3B1BDB25240061A59A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		106F9A3D1BDB25240061A59A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		106F9A431BDB2D940061A59A /* board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = board.png; path = "Game Art/board.png"; sourceTree = "<group>"; };
 		106F9A461BDB3A5C0061A59A /* Stone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stone.swift; sourceTree = "<group>"; };
 		106F9A481BDB3E7C0061A59A /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = "Game Art/tile.png"; sourceTree = "<group>"; };
 		106F9A4C1BDB4C490061A59A /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Board.swift; path = ../Board.swift; sourceTree = "<group>"; };
@@ -84,8 +86,9 @@
 		106F9A451BDB2DCA0061A59A /* Artwork */ = {
 			isa = PBXGroup;
 			children = (
+				103610871BDF218200E4C146 /* blackStone.png */,
+				103610881BDF218200E4C146 /* whiteStone.png */,
 				106F9A481BDB3E7C0061A59A /* tile.png */,
-				106F9A431BDB2D940061A59A /* board.png */,
 			);
 			name = Artwork;
 			sourceTree = "<group>";
@@ -150,7 +153,8 @@
 				106F9A301BDB25240061A59A /* GameScene.sks in Resources */,
 				106F9A3C1BDB25240061A59A /* LaunchScreen.storyboard in Resources */,
 				106F9A391BDB25240061A59A /* Assets.xcassets in Resources */,
-				106F9A441BDB2D940061A59A /* board.png in Resources */,
+				1036108A1BDF218200E4C146 /* whiteStone.png in Resources */,
+				103610891BDF218200E4C146 /* blackStone.png in Resources */,
 				106F9A371BDB25240061A59A /* Main.storyboard in Resources */,
 				106F9A491BDB3E7C0061A59A /* tile.png in Resources */,
 			);
@@ -315,6 +319,7 @@
 				106F9A421BDB25240061A59A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

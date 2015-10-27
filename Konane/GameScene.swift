@@ -14,6 +14,7 @@
 // - STATE MACHINE FOR GAMESCENE (WHICH PLAYER TURN IS ACTIVE, GAME OVER, ETC)
 
 import SpriteKit
+import GameplayKit
 
 enum JumpDirections {
   case North, South, East, West
@@ -21,14 +22,14 @@ enum JumpDirections {
 
 class GameScene: SKScene {
   
-  let stoneSize = CGSizeMake(50, 50)
+  let stoneSize = CGSizeMake(70, 70)
   var stones = [[Stone?]]()
   let board = Board()
   var indicators = [SKShapeNode]()
   
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-      scene?.anchorPoint = CGPointMake(0.2, 0.5)
+      scene?.anchorPoint = CGPointMake(0.05, 0.4)
       addChild(board)
       placeStartingStones(board.getBoardSize())
       startPlaying()
@@ -52,7 +53,7 @@ class GameScene: SKScene {
   }
   
   func startPlaying() {
-    
+    // SET FIRST PLAYER TURN OR STATE OF GAME HERE
   }
   
   func removeIndicators() {
@@ -66,7 +67,7 @@ class GameScene: SKScene {
   
   func jumpIsPossible(fromSquare: (column: Int,row: Int)) -> Bool {
     
-    //let originSquare = [fromSquare.column][fromSquare.row]
+    let origin = stones[fromSquare.column][fromSquare.row]
     
     var adjacentSquaresToTest = [(column: Int,row: Int)]()
     adjacentSquaresToTest.append((fromSquare.column, fromSquare.row+1)) // North
@@ -74,10 +75,10 @@ class GameScene: SKScene {
     adjacentSquaresToTest.append((fromSquare.column+1, fromSquare.row)) // East
     adjacentSquaresToTest.append((fromSquare.column-1, fromSquare.row)) // West
     
-    // PASS THROUGH BOARD AND REMOVE INDICATOR RECTS
+    // PASS THROUGH BOARD AND REMOVE OLD MOVE INDICATOR RECTS
     removeIndicators()
     
-    // FIRST TEST TO SEE IF ADJACENT SQUARES ARE OCCUPIED
+    // FIRST TEST TO SEE IF ADJACENT SQUARES ARE OCCUPIED, IF NONE THEN FALSE OUT
     var occupiedSquares = [Stone]()
     for square in adjacentSquaresToTest {
       if stoneExists(square) {
@@ -85,12 +86,14 @@ class GameScene: SKScene {
       }
     }
     if occupiedSquares.count == 0 {
-      return false
+      return false // no full squares around origin
     }
     
     // NEXT IF OCCUPIED SQUARES ARE FOUND, TEST SQUARE BEYOND, IF EMPTY THEN INDICATE POSSIBLE JUMP BY RETURNING TRUE
+    // OTHERWISE FALSE OUT
     let (originX, originY) = (fromSquare.column, fromSquare.row)
     var direction: JumpDirections
+    var possibleMoves = [(c: Int, r: Int)]()
     for square in occupiedSquares {
       if square.column > originX {
         direction = .East
@@ -103,24 +106,35 @@ class GameScene: SKScene {
       }
       let (c,r) = directionModifier((square.column,square.row), direction: direction)
       if isEmpty((c,r)) {
-        placeValidMoveIndicator((c,r))
+        possibleMoves.append((c,r))
       }
     }
+    if possibleMoves.count == 0 {
+      return false
+    }
+    
+    // THEN INDICATE POTENTIAL MOVES ON BOARD
+    placeValidMoveIndicator(possibleMoves)
+    origin?.setPossibleMoves(possibleMoves)
+    return true
     
     // THEN ADD NEW FUNCTION (TO STONE?) TO ALLOW ACTUAL MOVE TO INDICATED SQUARES
-    
-    return true
   }
   
-  func placeValidMoveIndicator(atSquare: (column: Int, row: Int)) {
-    let (c,r) = (atSquare.column, atSquare.row)
-    let dot = SKShapeNode(rectOfSize: CGSizeMake(43, 43))
-    dot.strokeColor = UIColor.redColor()
-    dot.name = "indicator dot"
-    dot.position = CGPointMake(CGFloat(c*board.gridSize), CGFloat(r*board.gridSize))
-    dot.zPosition = 15
-    addChild(dot)
-    indicators.append(dot)
+  func placeValidMoveIndicator(atSquares: [(c: Int,r: Int)]) {
+    for move in atSquares {
+      let (c,r) = (move.c, move.r)
+      let rect = SKShapeNode(rectOfSize: CGSizeMake(75, 75))
+      rect.strokeColor = UIColor.whiteColor()
+      rect.fillColor = UIColor.redColor()
+      rect.alpha = 0.75
+      rect.lineWidth = 2.0
+      rect.name = "move indicator"
+      rect.position = CGPointMake(CGFloat(c*board.gridSize), CGFloat(r*board.gridSize))
+      rect.zPosition = 15
+      addChild(rect)
+      indicators.append(rect)
+    }
   }
   
   func stoneExists(atSquare: (column: Int, row: Int)) -> Bool {

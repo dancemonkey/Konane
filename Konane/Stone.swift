@@ -16,22 +16,19 @@ enum StoneColor: String {
 class Stone: SKNode {
   var column: Int
   var row: Int
-  let stoneColor: UIColor
-  var sprite: SKShapeNode
-  let stoneSize = CGSizeMake(35, 35)
+  var sprite: SKSpriteNode
+  let stoneSize = CGSizeMake(70, 70)
+  private var possibleMoves = [(c: Int, r: Int)]?()
   
   init(column: Int, row: Int, stoneColor: StoneColor) {
     self.column = column
     self.row = row
     switch stoneColor {
     case .Black:
-      self.stoneColor = UIColor.blackColor()
+      self.sprite = SKSpriteNode(imageNamed: "blackStone")
     case .White:
-      self.stoneColor = UIColor.whiteColor()
+      self.sprite = SKSpriteNode(imageNamed: "whiteStone")
     }
-    self.sprite = SKShapeNode(ellipseOfSize: stoneSize)
-    self.sprite.fillColor = self.stoneColor
-    self.sprite.strokeColor = UIColor.blackColor()
     super.init()
     addChild(sprite)
     self.userInteractionEnabled = true
@@ -40,22 +37,29 @@ class Stone: SKNode {
   required init?(coder aDecoder: NSCoder) {
     self.column = aDecoder.valueForKey("column") as! Int
     self.row = aDecoder.valueForKey("row") as! Int
-    self.stoneColor = aDecoder.valueForKey("stoneColor") as! UIColor
-    self.sprite = SKShapeNode(ellipseOfSize: stoneSize)
-    self.sprite.fillColor = self.stoneColor
+    self.sprite = aDecoder.valueForKey("sprite") as! SKSpriteNode
     super.init()
     addChild(sprite)
     self.userInteractionEnabled = true
   }
   
+  // BELOW IS TEMP FUNCTION FOR TESTING. EVENTUALLY PUT THIS INTO SCENE ONCE GAME LOGIC IS COMPLETE
+  func removeStone() {
+    (scene as! GameScene).stones[self.column][self.row] = nil
+    self.removeFromParent()
+  }
+  
+  // used by scene once valid moves are found, is this bad practice?
+  func setPossibleMoves(possibleMoves: [(c:Int, r:Int)]) {
+    self.possibleMoves = possibleMoves
+  }
+  
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     let coord = (self.column, self.row)
     if (scene as! GameScene).jumpIsPossible(coord) {
-      // NOW WRITE CODE TO READ VALID MOVES AND ALLOW PIECE TO MOVE THERE WITH ANOTHER TAP
+      // GO INTO JUMPING STATE
+      // NEXT TAP SELECTS JUMPS OR CLEARS JUMPING STATE ON THIS PIECE
     }
-    
-    // REMEMBER BELOW TO USE FOR REMOVING STONE FROM BOARD AND FROM SCENE, WHILE RETAINING ARRAY STRUCTURE
-    //(scene as! GameScene).stones[self.column][self.row] = nil
-    //self.removeFromParent()
+    removeStone()
   }
 }
