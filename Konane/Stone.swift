@@ -21,6 +21,7 @@ class Stone: SKNode {
   private var possibleMoves = [(c: Int, r: Int)]?()
   var removingStones = false
   var selectable = false
+  var selected = false
   var color: StoneColor
   
   init(column: Int, row: Int, stoneColor: StoneColor) {
@@ -67,11 +68,13 @@ class Stone: SKNode {
     if removingStones {
       removeStone()
       game.increaseRemovedStones()
-    } else if selectable {
+    } else if selectable && !selected {
       if game.jumpIsPossible(coord) {
+        selected = true
+        game.stoneJumping = true
         // GO INTO JUMPING STATE
         // NEXT TAP SELECTS JUMPS OR CLEARS JUMPING STATE ON THIS PIECE
       }
-    }
+    } 
   }
 }

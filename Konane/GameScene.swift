@@ -25,12 +25,14 @@ class GameScene: SKScene {
   let stoneSize = CGSizeMake(70, 70)
   var stones = [[Stone?]]()
   let board = Board()
-  var indicators = [SKShapeNode]()
+  var indicators = [[SKShapeNode]]()
   
   let tileSelectState = SelectingTilesForRemoval()
   let jumpTilesState = JumpingTiles()
   let gameOverState = GameOver()
   var stateMachine: GKStateMachine!
+  
+  var stoneJumping = false
   
   private var removedStones = 0
   
@@ -54,13 +56,16 @@ class GameScene: SKScene {
     for w in 0..<width {
       currentColor = getNextColor(forColor: currentColor)
       stones.append([Stone]())
+      indicators.append([SKShapeNode]())
       for h in 0..<height {
         currentColor = getNextColor(forColor: currentColor)
         let stone = Stone(column: w, row: h, stoneColor: currentColor)
-        stone.position = CGPointMake(CGFloat(w*board.gridSize),CGFloat(h*board.gridSize))
+        let position = CGPointMake(CGFloat(w*board.gridSize),CGFloat(h*board.gridSize))
+        stone.position = position
         stone.zPosition = 15
         addChild(stone)
         stones[w].append(stone)
+        indicators[w].append(createIndicator(position))
       }
     }
   }
@@ -73,12 +78,23 @@ class GameScene: SKScene {
     stateMachine.enterState(SelectingTilesForRemoval)
   }
   
+  func createIndicator(position: CGPoint) -> SKShapeNode {
+    let rect = SKShapeNode(rectOfSize: CGSizeMake(75, 75))
+    rect.strokeColor = UIColor.whiteColor()
+    rect.fillColor = UIColor.redColor()
+    rect.alpha = 0.75
+    rect.lineWidth = 2.0
+    rect.name = "move indicator"
+    rect.position = position
+    rect.zPosition = 15
+    return rect
+  }
+  
   func removeIndicators() {
-    for dot in indicators {
-      dot.removeFromParent()
-    }
-    if indicators.count > 0 {
-      indicators.removeRange(0...indicators.count-1)
+    for row in indicators {
+      for dot in row {
+        dot.removeFromParent()
+      }
     }
   }
   
@@ -141,16 +157,7 @@ class GameScene: SKScene {
   func placeValidMoveIndicator(atSquares: [(c: Int,r: Int)]) {
     for move in atSquares {
       let (c,r) = (move.c, move.r)
-      let rect = SKShapeNode(rectOfSize: CGSizeMake(75, 75))
-      rect.strokeColor = UIColor.whiteColor()
-      rect.fillColor = UIColor.redColor()
-      rect.alpha = 0.75
-      rect.lineWidth = 2.0
-      rect.name = "move indicator"
-      rect.position = CGPointMake(CGFloat(c*board.gridSize), CGFloat(r*board.gridSize))
-      rect.zPosition = 15
-      addChild(rect)
-      indicators.append(rect)
+      addChild(indicators[c][r])
     }
   }
   
@@ -189,6 +196,33 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
+      // AAAAALLLLL THIS SHIT NEEDS TO MOVE INTO THE STONE CLASS!!!
+      if stoneJumping {
+        var selectedStone: Stone?
+        for row in stones {
+          for stone in row {
+            if stone != nil && stone!.selected {
+              selectedStone = stone!
+            }
+          }
+        }
+        for touch in touches {
+          let (oC, oR) = (selectedStone?.column, selectedStone?.row)
+          let location = touch.locationInNode(self)
+          let destinationNode = nodeAtPoint(location)
+          if destinationNode.name == "move indicator" {
+            let (dC,dR) = (destinationNode.position.x, destinationNode.position.y)
+            stones[oC!][oR!] = nil
+            selectedStone?.position = destinationNode.position
+            destinationNode.removeFromParent()
+            selectedStone?.selected = false
+            let (column, row) = (Int(dC)/board.gridSize,Int(dR)/board.gridSize)
+            stones[column][row] = selectedStone
+            selectedStone?.row = row
+            selectedStone?.column = column
+          }
+        }
+      }
     }
    
     override func update(currentTime: CFTimeInterval) {
