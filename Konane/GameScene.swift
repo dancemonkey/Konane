@@ -27,9 +27,22 @@ class GameScene: SKScene {
   let board = Board()
   var indicators = [SKShapeNode]()
   
+  let tileSelectState = SelectingTilesForRemoval()
+  let jumpTilesState = JumpingTiles()
+  let gameOverState = GameOver()
+  var stateMachine: GKStateMachine!
+  
+  private var removedStones = 0
+  
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
       scene?.anchorPoint = CGPointMake(0.05, 0.4)
+      
+      tileSelectState.gameScene = self
+      jumpTilesState.gameScene = self
+      gameOverState.gameScene = self
+      stateMachine = GKStateMachine(states: [tileSelectState, jumpTilesState, gameOverState])
+      
       addChild(board)
       placeStartingStones(board.getBoardSize())
       startPlaying()
@@ -52,8 +65,12 @@ class GameScene: SKScene {
     }
   }
   
+  func increaseRemovedStones() {
+    self.removedStones++
+  }
+  
   func startPlaying() {
-    // SET FIRST PLAYER TURN OR STATE OF GAME HERE
+    stateMachine.enterState(SelectingTilesForRemoval)
   }
   
   func removeIndicators() {
@@ -175,6 +192,8 @@ class GameScene: SKScene {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+      if removedStones >= 2 {
+        stateMachine.enterState(JumpingTiles)
+      }
     }
 }

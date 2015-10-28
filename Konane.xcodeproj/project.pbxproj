@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		103610891BDF218200E4C146 /* blackStone.png in Resources */ = {isa = PBXBuildFile; fileRef = 103610871BDF218200E4C146 /* blackStone.png */; };
 		1036108A1BDF218200E4C146 /* whiteStone.png in Resources */ = {isa = PBXBuildFile; fileRef = 103610881BDF218200E4C146 /* whiteStone.png */; };
+		1036108C1BE06A8000E4C146 /* SelectingTilesForRemoval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1036108B1BE06A8000E4C146 /* SelectingTilesForRemoval.swift */; };
+		1036108E1BE06EDC00E4C146 /* JumpingTiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1036108D1BE06EDC00E4C146 /* JumpingTiles.swift */; };
+		103610901BE06EFE00E4C146 /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1036108F1BE06EFE00E4C146 /* GameOver.swift */; };
 		106F9A2E1BDB25240061A59A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A2D1BDB25240061A59A /* AppDelegate.swift */; };
 		106F9A301BDB25240061A59A /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A2F1BDB25240061A59A /* GameScene.sks */; };
 		106F9A321BDB25240061A59A /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A311BDB25240061A59A /* GameScene.swift */; };
@@ -24,6 +27,9 @@
 /* Begin PBXFileReference section */
 		103610871BDF218200E4C146 /* blackStone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blackStone.png; path = "Game Art/blackStone.png"; sourceTree = "<group>"; };
 		103610881BDF218200E4C146 /* whiteStone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = whiteStone.png; path = "Game Art/whiteStone.png"; sourceTree = "<group>"; };
+		1036108B1BE06A8000E4C146 /* SelectingTilesForRemoval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectingTilesForRemoval.swift; sourceTree = "<group>"; };
+		1036108D1BE06EDC00E4C146 /* JumpingTiles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JumpingTiles.swift; sourceTree = "<group>"; };
+		1036108F1BE06EFE00E4C146 /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
 		106F9A2A1BDB25240061A59A /* Konane.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Konane.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		106F9A2D1BDB25240061A59A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		106F9A2F1BDB25240061A59A /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -74,6 +80,9 @@
 				106F9A4C1BDB4C490061A59A /* Board.swift */,
 				106F9A461BDB3A5C0061A59A /* Stone.swift */,
 				106F9A311BDB25240061A59A /* GameScene.swift */,
+				1036108B1BE06A8000E4C146 /* SelectingTilesForRemoval.swift */,
+				1036108D1BE06EDC00E4C146 /* JumpingTiles.swift */,
+				1036108F1BE06EFE00E4C146 /* GameOver.swift */,
 				106F9A331BDB25240061A59A /* GameViewController.swift */,
 				106F9A351BDB25240061A59A /* Main.storyboard */,
 				106F9A381BDB25240061A59A /* Assets.xcassets */,
@@ -170,8 +179,11 @@
 				106F9A321BDB25240061A59A /* GameScene.swift in Sources */,
 				106F9A341BDB25240061A59A /* GameViewController.swift in Sources */,
 				106F9A4D1BDB4C490061A59A /* Board.swift in Sources */,
+				1036108C1BE06A8000E4C146 /* SelectingTilesForRemoval.swift in Sources */,
+				1036108E1BE06EDC00E4C146 /* JumpingTiles.swift in Sources */,
 				106F9A2E1BDB25240061A59A /* AppDelegate.swift in Sources */,
 				106F9A471BDB3A5C0061A59A /* Stone.swift in Sources */,
+				103610901BE06EFE00E4C146 /* GameOver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
