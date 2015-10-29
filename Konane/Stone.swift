@@ -36,6 +36,7 @@ class Stone: SKNode {
       color = .White
     }
     super.init()
+    self.name = "stone"
     addChild(sprite)
     self.userInteractionEnabled = true
   }
@@ -46,6 +47,7 @@ class Stone: SKNode {
     self.sprite = aDecoder.valueForKey("sprite") as! SKSpriteNode
     self.color = aDecoder.valueForKey("color") as! StoneColor
     super.init()
+    self.name = "stone"
     addChild(sprite)
     self.userInteractionEnabled = true
   }
@@ -61,6 +63,13 @@ class Stone: SKNode {
     self.possibleMoves = possibleMoves
   }
   
+  func moveStone(toLocation location: (x: Int, y: Int), ofNode node: SKNode) {
+    self.selected = false
+    self.position = node.position
+    self.column = location.x
+    self.row = location.y
+  }
+  
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     let coord = (self.column, self.row)
     let game = scene as! GameScene
@@ -70,10 +79,9 @@ class Stone: SKNode {
       game.increaseRemovedStones()
     } else if selectable && !selected {
       if game.jumpIsPossible(coord) {
+        game.clearSelectedStones()
         selected = true
         game.stoneJumping = true
-        // GO INTO JUMPING STATE
-        // NEXT TAP SELECTS JUMPS OR CLEARS JUMPING STATE ON THIS PIECE
       }
     } 
   }

@@ -30,6 +30,11 @@ class JumpingTiles: GKState {
   
   override func willExitWithNextState(nextState: GKState) {
     if let scene = gameScene {
+      for row in scene.stones {
+        for stone in row {
+          stone?.selectable = false
+        }
+      }
       // Perform here the actions that you want to do with your UI when it exits this state.
     }
   }

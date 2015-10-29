@@ -6,18 +6,18 @@
 //  Copyright (c) 2015 Drew Lanning. All rights reserved.
 //
 
-// - ADD STATES TO STONES? REQUIRE ADDING AN ENTITY TO THE STONE CLASS?
-// - STATES:  SELECT FOR REMOVAL (START OF GAME)
-//            MOVING STATE (ON PLAYER TURN)
-//            IDLE STATE (WHEN NOT PLAYER TURN)
 // - ADD PLAYER ENTITY (HOLD SCORE, WHICH STONES YOU OWN)
-// - STATE MACHINE FOR GAMESCENE (WHICH PLAYER TURN IS ACTIVE, GAME OVER, ETC)
+// - STATE MACHINE FOR GAMESCENE (WHICH PLAYER TURN IS ACTIVE, GAME OVER, ETC) - do this with enum?
 
 import SpriteKit
 import GameplayKit
 
 enum JumpDirections {
   case North, South, East, West
+}
+
+enum PlayerTurn {
+  case Black, White
 }
 
 class GameScene: SKScene {
@@ -193,16 +193,26 @@ class GameScene: SKScene {
       return .Black
     }
   }
+  
+  func clearSelectedStones() {
+    for row in stones {
+      for stone in row {
+        if stone != nil {
+          stone?.selected = false
+        }
+      }
+    }
+    stoneJumping = false
+  }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-       /* Called when a touch begins */
-      // AAAAALLLLL THIS SHIT NEEDS TO MOVE INTO THE STONE CLASS!!!
+      var selectedStone: Stone? = nil
       if stoneJumping {
-        var selectedStone: Stone?
         for row in stones {
           for stone in row {
             if stone != nil && stone!.selected {
               selectedStone = stone!
+              stone!.selected = false
             }
           }
         }
@@ -213,16 +223,16 @@ class GameScene: SKScene {
           if destinationNode.name == "move indicator" {
             let (dC,dR) = (destinationNode.position.x, destinationNode.position.y)
             stones[oC!][oR!] = nil
-            selectedStone?.position = destinationNode.position
-            destinationNode.removeFromParent()
-            selectedStone?.selected = false
             let (column, row) = (Int(dC)/board.gridSize,Int(dR)/board.gridSize)
             stones[column][row] = selectedStone
-            selectedStone?.row = row
-            selectedStone?.column = column
+            selectedStone?.moveStone(toLocation: (column, row), ofNode: destinationNode)
+            removeIndicators()
+            clearSelectedStones()
           }
         }
       }
+      clearSelectedStones()
+      removeIndicators()
     }
    
     override func update(currentTime: CFTimeInterval) {
