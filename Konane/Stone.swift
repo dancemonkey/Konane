@@ -77,12 +77,12 @@ class Stone: SKNode {
     if removingStones {
       removeStone()
       game.increaseRemovedStones()
-    } else if selectable && !selected {
+    } else if selectable { 
       if game.jumpIsPossible(coord) {
         game.clearSelectedStones()
         selected = true
         game.stoneJumping = true
       }
-    } 
+    }
   }
 }

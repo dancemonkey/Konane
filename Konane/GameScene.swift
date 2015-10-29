@@ -16,7 +16,7 @@ enum JumpDirections {
   case North, South, East, West
 }
 
-enum PlayerTurn {
+enum PlayerTurn: String {
   case Black, White
 }
 
@@ -33,6 +33,13 @@ class GameScene: SKScene {
   var stateMachine: GKStateMachine!
   
   var stoneJumping = false
+  weak var stateLabel: SKLabelNode!
+  weak var turnLabel: SKLabelNode!
+  var playerTurn: PlayerTurn = .Black {
+    didSet {
+      turnLabel?.text = "\(playerTurn)'s turn."
+    }
+  }
   
   private var removedStones = 0
   
@@ -72,6 +79,7 @@ class GameScene: SKScene {
   
   func increaseRemovedStones() {
     self.removedStones++
+    switchPlayerTurn(from: playerTurn)
   }
   
   func startPlaying() {
@@ -204,6 +212,14 @@ class GameScene: SKScene {
     }
     stoneJumping = false
   }
+  
+  func switchPlayerTurn(from currentTurn: PlayerTurn) {
+    if currentTurn == .Black {
+      playerTurn = .White
+    } else {
+      playerTurn = .Black
+    }
+  }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
       var selectedStone: Stone? = nil
@@ -228,6 +244,7 @@ class GameScene: SKScene {
             selectedStone?.moveStone(toLocation: (column, row), ofNode: destinationNode)
             removeIndicators()
             clearSelectedStones()
+            switchPlayerTurn(from: playerTurn)
           }
         }
       }
