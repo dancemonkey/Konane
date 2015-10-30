@@ -6,8 +6,7 @@
 //  Copyright (c) 2015 Drew Lanning. All rights reserved.
 //
 
-// - ADD PLAYER ENTITY (HOLD SCORE, WHICH STONES YOU OWN)
-// - STATE MACHINE FOR GAMESCENE (WHICH PLAYER TURN IS ACTIVE, GAME OVER, ETC) - do this with enum?
+// !! CREATE GAME MODEL TO EMBODY THE RULES, PLACE LOGIC TESTING IN THERE AND PUT ONLY VIEW DISPLAY HERE
 
 import SpriteKit
 import GameplayKit
@@ -33,9 +32,9 @@ class GameScene: SKScene {
   var stateMachine: GKStateMachine!
   
   var stoneJumping = false
-  weak var stateLabel: SKLabelNode!
-  weak var turnLabel: SKLabelNode!
-  var playerTurn: PlayerTurn = .Black {
+  var stateLabel: SKLabelNode!
+  var turnLabel: SKLabelNode!
+  var playerTurn: StoneColor = .Black {
     didSet {
       turnLabel?.text = "\(playerTurn)'s turn."
     }
@@ -84,6 +83,23 @@ class GameScene: SKScene {
   
   func startPlaying() {
     stateMachine.enterState(SelectingTilesForRemoval)
+    
+    turnLabel = SKLabelNode(text: "\(playerTurn)'s turn.")
+    turnLabel.fontName = "AmericanTypewriter"
+    turnLabel.horizontalAlignmentMode = .Left
+    turnLabel.position = CGPointMake(10, -100)
+    turnLabel.fontSize = CGFloat(50)
+    turnLabel.fontColor = UIColor.blackColor()
+    addChild(turnLabel)
+    
+    stateLabel = SKLabelNode(text: "Select a tile for removal.")
+    stateLabel.fontName = "AmericanTypewriter"
+    stateLabel.horizontalAlignmentMode = .Left
+    let pos = CGPointMake(turnLabel.position.x, turnLabel.position.y-75)
+    stateLabel.position = pos
+    stateLabel.fontSize = CGFloat(50)
+    stateLabel.fontColor = UIColor.blackColor()
+    addChild(stateLabel)
   }
   
   func createIndicator(position: CGPoint) -> SKShapeNode {
@@ -157,9 +173,8 @@ class GameScene: SKScene {
     // THEN INDICATE POTENTIAL MOVES ON BOARD
     placeValidMoveIndicator(possibleMoves)
     origin?.setPossibleMoves(possibleMoves)
-    return true
     
-    // THEN ADD NEW FUNCTION (TO STONE?) TO ALLOW ACTUAL MOVE TO INDICATED SQUARES
+    return true
   }
   
   func placeValidMoveIndicator(atSquares: [(c: Int,r: Int)]) {
@@ -213,7 +228,7 @@ class GameScene: SKScene {
     stoneJumping = false
   }
   
-  func switchPlayerTurn(from currentTurn: PlayerTurn) {
+  func switchPlayerTurn(from currentTurn: StoneColor) {
     if currentTurn == .Black {
       playerTurn = .White
     } else {

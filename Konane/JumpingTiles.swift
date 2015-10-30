@@ -23,6 +23,7 @@ class JumpingTiles: GKState {
         for stone in row {
           // NEED TO TEST HERE FOR WHICH PLAYER IS ACTIVE AND ONLY ACTIVATE THOSE STONES
           stone?.selectable = true
+          scene.stateLabel.text = "Jump your opponent's tiles."
         }
       }
     }

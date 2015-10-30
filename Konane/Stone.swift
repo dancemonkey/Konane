@@ -52,13 +52,11 @@ class Stone: SKNode {
     self.userInteractionEnabled = true
   }
   
-  // BELOW IS TEMP FUNCTION FOR TESTING. EVENTUALLY PUT THIS INTO SCENE ONCE GAME LOGIC IS COMPLETE
   func removeStone() {
     (scene as! GameScene).stones[self.column][self.row] = nil
     self.removeFromParent()
   }
   
-  // used by scene once valid moves are found, is this bad practice?
   func setPossibleMoves(possibleMoves: [(c:Int, r:Int)]) {
     self.possibleMoves = possibleMoves
   }
@@ -74,10 +72,10 @@ class Stone: SKNode {
     let coord = (self.column, self.row)
     let game = scene as! GameScene
     
-    if removingStones {
+    if removingStones && self.color == game.playerTurn {
       removeStone()
       game.increaseRemovedStones()
-    } else if selectable { 
+    } else if selectable && self.color == game.playerTurn {
       if game.jumpIsPossible(coord) {
         game.clearSelectedStones()
         selected = true
