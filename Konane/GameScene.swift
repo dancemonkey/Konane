@@ -11,14 +11,6 @@
 import SpriteKit
 import GameplayKit
 
-enum JumpDirections {
-  case North, South, East, West
-}
-
-enum PlayerTurn: String {
-  case Black, White
-}
-
 class GameScene: SKScene {
   
   let stoneSize = CGSizeMake(70, 70)
