@@ -174,6 +174,9 @@ class GameScene: SKScene {
             let (column, row) = (Int(dC)/board.gridSize,Int(dR)/board.gridSize)
             stones[column][row] = selectedStone
             selectedStone?.moveStone(toLocation: (column, row), ofNode: destinationNode)
+            
+            // IN HERE TEST FOR JUMPED STONE AND REMOVE IT
+            
             removeIndicators()
             clearSelectedStones()
             gameModel.switchPlayerTurn(from: gameModel.playerTurn)

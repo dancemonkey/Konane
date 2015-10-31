@@ -116,5 +116,10 @@ class KonaneModel {
       playerTurn = .Black
     }
   }
+  
+  // STONE REMOVAL PSEUDOCODE
+  // atRiskStones = occupiedSquares (from jumpIsPossible above)
+  // reverseJumpDirection = take jump direction and subtract 1 in the opposite direction
+  // removeStoneAtCoord = function that removes atRiskStone that matches (x,y) in reverseJumpDirection
 
 }
