@@ -6,42 +6,29 @@
 //  Copyright (c) 2015 Drew Lanning. All rights reserved.
 //
 
-// !! CREATE GAME MODEL TO EMBODY THE RULES, PLACE LOGIC TESTING IN THERE AND PUT ONLY VIEW DISPLAY HERE
-
 import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+  
+  var gameModel: KonaneModel!
   
   let stoneSize = CGSizeMake(70, 70)
   var stones = [[Stone?]]()
   let board = Board()
   var indicators = [[SKShapeNode]]()
   
-  let tileSelectState = SelectingTilesForRemoval()
-  let jumpTilesState = JumpingTiles()
-  let gameOverState = GameOver()
-  var stateMachine: GKStateMachine!
-  
   var stoneJumping = false
   var stateLabel: SKLabelNode!
   var turnLabel: SKLabelNode!
-  var playerTurn: StoneColor = .Black {
-    didSet {
-      turnLabel?.text = "\(playerTurn)'s turn."
-    }
-  }
   
   private var removedStones = 0
   
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-      scene?.anchorPoint = CGPointMake(0.05, 0.4)
+
+      gameModel = KonaneModel(withScene: self)
       
-      tileSelectState.gameScene = self
-      jumpTilesState.gameScene = self
-      gameOverState.gameScene = self
-      stateMachine = GKStateMachine(states: [tileSelectState, jumpTilesState, gameOverState])
+      scene?.anchorPoint = CGPointMake(0.05, 0.4)
       
       addChild(board)
       placeStartingStones(board.getBoardSize())
@@ -70,13 +57,13 @@ class GameScene: SKScene {
   
   func increaseRemovedStones() {
     self.removedStones++
-    switchPlayerTurn(from: playerTurn)
+    gameModel.switchPlayerTurn(from: gameModel.playerTurn)
   }
   
   func startPlaying() {
-    stateMachine.enterState(SelectingTilesForRemoval)
+    gameModel.startPlaying()
     
-    turnLabel = SKLabelNode(text: "\(playerTurn)'s turn.")
+    turnLabel = SKLabelNode(text: "\(gameModel.playerTurn)'s turn.")
     turnLabel.fontName = "AmericanTypewriter"
     turnLabel.horizontalAlignmentMode = .Left
     turnLabel.position = CGPointMake(10, -100)
@@ -112,61 +99,6 @@ class GameScene: SKScene {
         dot.removeFromParent()
       }
     }
-  }
-  
-  func jumpIsPossible(fromSquare: (column: Int,row: Int)) -> Bool {
-    
-    let origin = stones[fromSquare.column][fromSquare.row]
-    
-    var adjacentSquaresToTest = [(column: Int,row: Int)]()
-    adjacentSquaresToTest.append((fromSquare.column, fromSquare.row+1)) // North
-    adjacentSquaresToTest.append((fromSquare.column, fromSquare.row-1)) // South
-    adjacentSquaresToTest.append((fromSquare.column+1, fromSquare.row)) // East
-    adjacentSquaresToTest.append((fromSquare.column-1, fromSquare.row)) // West
-    
-    // PASS THROUGH BOARD AND REMOVE OLD MOVE INDICATOR RECTS
-    removeIndicators()
-    
-    // FIRST TEST TO SEE IF ADJACENT SQUARES ARE OCCUPIED, IF NONE THEN FALSE OUT
-    var occupiedSquares = [Stone]()
-    for square in adjacentSquaresToTest {
-      if stoneExists(square) {
-        occupiedSquares.append(stones[square.column][square.row]!)
-      }
-    }
-    if occupiedSquares.count == 0 {
-      return false // no full squares around origin
-    }
-    
-    // NEXT IF OCCUPIED SQUARES ARE FOUND, TEST SQUARE BEYOND, IF EMPTY THEN INDICATE POSSIBLE JUMP BY RETURNING TRUE
-    // OTHERWISE FALSE OUT
-    let (originX, originY) = (fromSquare.column, fromSquare.row)
-    var direction: JumpDirections
-    var possibleMoves = [(c: Int, r: Int)]()
-    for square in occupiedSquares {
-      if square.column > originX {
-        direction = .East
-      } else if square.column < originX {
-        direction = .West
-      } else if square.row > originY {
-        direction = .North
-      } else {
-        direction = .South
-      }
-      let (c,r) = directionModifier((square.column,square.row), direction: direction)
-      if isEmpty((c,r)) {
-        possibleMoves.append((c,r))
-      }
-    }
-    if possibleMoves.count == 0 {
-      return false
-    }
-    
-    // THEN INDICATE POTENTIAL MOVES ON BOARD
-    placeValidMoveIndicator(possibleMoves)
-    origin?.setPossibleMoves(possibleMoves)
-    
-    return true
   }
   
   func placeValidMoveIndicator(atSquares: [(c: Int,r: Int)]) {
@@ -219,14 +151,6 @@ class GameScene: SKScene {
     }
     stoneJumping = false
   }
-  
-  func switchPlayerTurn(from currentTurn: StoneColor) {
-    if currentTurn == .Black {
-      playerTurn = .White
-    } else {
-      playerTurn = .Black
-    }
-  }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
       var selectedStone: Stone? = nil
@@ -240,6 +164,7 @@ class GameScene: SKScene {
           }
         }
         for touch in touches {
+          // MOVE THIS STONE JUMPING LOGIC INTO MODEL
           let (oC, oR) = (selectedStone?.column, selectedStone?.row)
           let location = touch.locationInNode(self)
           let destinationNode = nodeAtPoint(location)
@@ -251,7 +176,7 @@ class GameScene: SKScene {
             selectedStone?.moveStone(toLocation: (column, row), ofNode: destinationNode)
             removeIndicators()
             clearSelectedStones()
-            switchPlayerTurn(from: playerTurn)
+            gameModel.switchPlayerTurn(from: gameModel.playerTurn)
           }
         }
       }
@@ -261,7 +186,7 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
       if removedStones >= 2 {
-        stateMachine.enterState(JumpingTiles)
+        gameModel.stateMachine.enterState(JumpingTiles)
       }
     }
 }

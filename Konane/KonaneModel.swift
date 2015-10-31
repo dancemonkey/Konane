@@ -53,9 +53,11 @@ class KonaneModel {
     adjacentSquares.append((stone.column+1, stone.row)) // East
     adjacentSquares.append((stone.column-1, stone.row)) // West
     
+    scene.removeIndicators()
+    
     var occupiedSquares = [Stone]()
     for square in adjacentSquares {
-      if stoneExistsAt(square, inBoard: stones) {                        // WRITE ME
+      if stoneExistsAt(square, inBoard: stones) {
         occupiedSquares.append(stones[square.column][square.row]!)
       }
     }
@@ -83,7 +85,8 @@ class KonaneModel {
     if possibleMoves.count == 0 {
       return false
     }
-    
+    scene.placeValidMoveIndicator(possibleMoves)
+    stone.setPossibleMoves(possibleMoves)
     return true
   }
   
