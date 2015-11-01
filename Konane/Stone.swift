@@ -13,43 +13,35 @@ enum StoneColor: String {
   case White
 }
 
-class Stone: SKNode {
+class Stone: SKSpriteNode {
   var column: Int
   var row: Int
-  var sprite: SKSpriteNode
+  var spriteName: String
   let stoneSize = CGSizeMake(70, 70)
   private var possibleMoves = [(c: Int, r: Int)]?()
   var removingStones = false
   var selectable = false
   var selected = false
-  var color: StoneColor
+  var stoneColor: StoneColor
   
   init(column: Int, row: Int, stoneColor: StoneColor) {
     self.column = column
     self.row = row
     switch stoneColor {
     case .Black:
-      self.sprite = SKSpriteNode(imageNamed: "blackStone")
-      color = .Black
+      self.spriteName = "blackStone"
+      self.stoneColor = .Black
     case .White:
-      self.sprite = SKSpriteNode(imageNamed: "whiteStone")
-      color = .White
+      self.spriteName = "whiteStone"
+      self.stoneColor = .White
     }
-    super.init()
+    super.init(texture: SKTexture(imageNamed: spriteName), color: UIColor.clearColor(), size: stoneSize)
     self.name = "stone"
-    addChild(sprite)
     self.userInteractionEnabled = true
   }
   
   required init?(coder aDecoder: NSCoder) {
-    self.column = aDecoder.valueForKey("column") as! Int
-    self.row = aDecoder.valueForKey("row") as! Int
-    self.sprite = aDecoder.valueForKey("sprite") as! SKSpriteNode
-    self.color = aDecoder.valueForKey("color") as! StoneColor
-    super.init()
-    self.name = "stone"
-    addChild(sprite)
-    self.userInteractionEnabled = true
+    fatalError("init(coder:) has not been implemented")
   }
   
   func removeStone() {
@@ -73,15 +65,18 @@ class Stone: SKNode {
     
     let game = scene as! GameScene
     
-    /*if removingStones && self.color == game.gameModel.playerTurn {
+    if removingStones && self.stoneColor == game.gameModel.playerTurn {
       removeStone()
       game.increaseRemovedStones()
-    } else if selectable && self.color == game.gameModel.playerTurn {
+    } else if selectable && self.stoneColor == game.gameModel.playerTurn {
       if game.gameModel.jumpIsPossible(withStone: self, inBoard: game.stones) {
         game.clearSelectedStones()
         selected = true
         game.stoneJumping = true
       }
-    }*/
+    } else if self.stoneColor != game.gameModel.playerTurn {
+      game.clearSelectedStones()
+      game.removeIndicators()
+    }
   }
 }
