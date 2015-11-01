@@ -24,6 +24,7 @@ class KonaneModel {
   let jumpTilesState = JumpingTiles()
   let gameOverState = GameOver()
   var stateMachine: GKStateMachine!
+  var vulnerableStones = [Stone]()
   
   var playerTurn: StoneColor = .Black {
     didSet {
@@ -68,15 +69,7 @@ class KonaneModel {
     var direction: JumpDirections
     var possibleMoves = [(c: Int, r: Int)]()
     for square in occupiedSquares {
-      if square.column > origin?.column {
-        direction = .East
-      } else if square.column < origin?.column {
-        direction = .West
-      } else if square.row > origin?.row {
-        direction = .North
-      } else {
-        direction = .South
-      }
+      direction = directionJumped(from: (origin!.column, origin!.row), destination: (square.column, square.row))
       let (c,r) = jumpCoordinates((square.column, square.row), direction: direction)
       if !stoneExistsAt((c,r), inBoard: stones) {
         possibleMoves.append((c,r))
@@ -87,11 +80,50 @@ class KonaneModel {
     }
     scene.placeValidMoveIndicator(possibleMoves)
     stone.setPossibleMoves(possibleMoves)
+    self.vulnerableStones = occupiedSquares
+    
     return true
+  }
+  
+  func findJumpedStone(inGroup adjacentStones: [Stone], withMove move: (c: Int,r: Int)) -> (c: Int, r: Int)? {
+    for stone in adjacentStones {
+      if move.r == stone.row && (move.c == (stone.column+1) || move.c == (stone.column-1)) {
+        return (stone.column, stone.row)
+      } else if move.c == stone.column && (move.r == (stone.row+1) || move.r == (stone.row-1)) {
+        return (stone.column,stone.row)
+      }
+    }
+    return nil
+  }
+  
+  func findVulnerableStones(inGroup adjacentStones: [Stone], withMove: [(c: Int,r: Int)]) -> [Stone] {
+    var vulnerable = [Stone]()
+    for move in withMove {
+      for stone in adjacentStones {
+        if move.r == stone.row && (move.c == (stone.column+1) || move.c == (stone.column-1)) {
+          vulnerable.append(stone)
+        } else if move.c == stone.column && (move.r == (stone.row+1) || move.r == (stone.row-1)) {
+          vulnerable.append(stone)
+        }
+      }
+    }
+    return vulnerable
   }
   
   func stoneExistsAt(square: (column: Int, row: Int), inBoard stones: [[Stone?]]) -> Bool {
     return stones[square.column][square.row] != nil
+  }
+  
+  func directionJumped(from origin: (c: Int, r: Int), destination: (c: Int, r: Int)) -> JumpDirections {
+    if destination.c > origin.c {
+      return .East
+    } else if destination.c < origin.c {
+      return .West
+    } else if destination.r > origin.r {
+      return .North
+    } else {
+      return .South
+    }
   }
   
   func jumpCoordinates(startingCoordinates: (column: Int, row: Int), direction: JumpDirections) -> (c: Int, r: Int) {

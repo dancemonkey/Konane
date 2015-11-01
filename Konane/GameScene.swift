@@ -175,6 +175,8 @@ class GameScene: SKScene {
           selectedStone?.moveStone(toLocation: (column, row), ofNode: destinationNode)
           
           // IN HERE TEST FOR JUMPED STONE AND REMOVE IT
+          let takenStone = gameModel.findJumpedStone(inGroup: gameModel.vulnerableStones, withMove: (column, row))
+          stones[takenStone!.c][takenStone!.r]?.removeStone()
           
           removeIndicators()
           clearSelectedStones()

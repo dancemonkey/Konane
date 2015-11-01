@@ -53,6 +53,10 @@ class Stone: SKSpriteNode {
     self.possibleMoves = possibleMoves
   }
   
+  func getPossibleMoves() -> [(c: Int, r: Int)]? {
+    return possibleMoves
+  }
+  
   func moveStone(toLocation location: (x: Int, y: Int), ofNode node: SKNode) {
     self.selected = false
     self.position = node.position
