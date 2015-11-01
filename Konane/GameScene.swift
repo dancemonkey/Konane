@@ -154,11 +154,6 @@ class GameScene: SKScene {
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     var selectedStone: Stone? = nil
     
-    for touch in touches {
-      let location = touch.locationInNode(self)
-      print(nodeAtPoint(location))
-    }
-    
     if stoneJumping {
       for row in stones {
         for stone in row {
