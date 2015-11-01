@@ -69,11 +69,11 @@ class Stone: SKNode {
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    // HOW CAN I NOT DIRECTLY REFERENCE THE MODEL HERE?
+    // HOW CAN I NOT DIRECTLY REFERENCE THE MODEL HERE? MOVE ALL TO MODEL OR SCENE?
     
     let game = scene as! GameScene
     
-    if removingStones && self.color == game.gameModel.playerTurn {
+    /*if removingStones && self.color == game.gameModel.playerTurn {
       removeStone()
       game.increaseRemovedStones()
     } else if selectable && self.color == game.gameModel.playerTurn {
@@ -82,6 +82,6 @@ class Stone: SKNode {
         selected = true
         game.stoneJumping = true
       }
-    }
+    }*/
   }
 }

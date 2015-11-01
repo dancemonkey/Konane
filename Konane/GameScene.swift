@@ -24,16 +24,15 @@ class GameScene: SKScene {
   
   private var removedStones = 0
   
-    override func didMoveToView(view: SKView) {
-
-      gameModel = KonaneModel(withScene: self)
-      
-      scene?.anchorPoint = CGPointMake(0.05, 0.4)
-      
-      addChild(board)
-      placeStartingStones(board.getBoardSize())
-      startPlaying()
-    }
+  override func didMoveToView(view: SKView) {
+    gameModel = KonaneModel(withScene: self)
+    
+    scene?.anchorPoint = CGPointMake(0.05, 0.4)
+    
+    addChild(board)
+    placeStartingStones(board.getBoardSize())
+    startPlaying()
+  }
   
   func placeStartingStones(size: (Int,Int)) {
     let (width, height) = size
@@ -152,44 +151,49 @@ class GameScene: SKScene {
     stoneJumping = false
   }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-      var selectedStone: Stone? = nil
-      if stoneJumping {
-        for row in stones {
-          for stone in row {
-            if stone != nil && stone!.selected {
-              selectedStone = stone!
-              stone!.selected = false
-            }
-          }
-        }
-        for touch in touches {
-          // MOVE THIS STONE JUMPING LOGIC INTO MODEL
-          let (oC, oR) = (selectedStone?.column, selectedStone?.row)
-          let location = touch.locationInNode(self)
-          let destinationNode = nodeAtPoint(location)
-          if destinationNode.name == "move indicator" {
-            let (dC,dR) = (destinationNode.position.x, destinationNode.position.y)
-            stones[oC!][oR!] = nil
-            let (column, row) = (Int(dC)/board.gridSize,Int(dR)/board.gridSize)
-            stones[column][row] = selectedStone
-            selectedStone?.moveStone(toLocation: (column, row), ofNode: destinationNode)
-            
-            // IN HERE TEST FOR JUMPED STONE AND REMOVE IT
-            
-            removeIndicators()
-            clearSelectedStones()
-            gameModel.switchPlayerTurn(from: gameModel.playerTurn)
+  override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    var selectedStone: Stone? = nil
+    
+    for touch in touches {
+      let location = touch.locationInNode(self)
+      print(nodeAtPoint(location))
+    }
+    
+    if stoneJumping {
+      for row in stones {
+        for stone in row {
+          if stone != nil && stone!.selected {
+            selectedStone = stone!
+            stone!.selected = false
           }
         }
       }
-      clearSelectedStones()
-      removeIndicators()
-    }
-   
-    override func update(currentTime: CFTimeInterval) {
-      if removedStones >= 2 {
-        gameModel.stateMachine.enterState(JumpingTiles)
+      for touch in touches { // MOVE THIS STONE JUMPING LOGIC INTO MODEL
+        let (oC, oR) = (selectedStone?.column, selectedStone?.row)
+        let location = touch.locationInNode(self)
+        let destinationNode = nodeAtPoint(location)
+        if destinationNode.name == "move indicator" {
+          let (dC,dR) = (destinationNode.position.x, destinationNode.position.y)
+          stones[oC!][oR!] = nil
+          let (column, row) = (Int(dC)/board.gridSize,Int(dR)/board.gridSize)
+          stones[column][row] = selectedStone
+          selectedStone?.moveStone(toLocation: (column, row), ofNode: destinationNode)
+          
+          // IN HERE TEST FOR JUMPED STONE AND REMOVE IT
+          
+          removeIndicators()
+          clearSelectedStones()
+          gameModel.switchPlayerTurn(from: gameModel.playerTurn)
+        }
       }
     }
+    clearSelectedStones()
+    removeIndicators()
+  }
+  
+  override func update(currentTime: CFTimeInterval) {
+    if removedStones >= 2 {
+      gameModel.stateMachine.enterState(JumpingTiles)
+    }
+  }
 }
