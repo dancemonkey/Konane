@@ -58,7 +58,7 @@ class KonaneModel {
     
     var occupiedSquares = [Stone]()
     for square in adjacentSquares {
-      if stoneExistsAt(square, inBoard: stones) {
+      if withinBoundary(ofBoard: scene.board, forCoord: (square.column, square.row)) && stoneExistsAt(square, inBoard: stones) {
         occupiedSquares.append(stones[square.column][square.row]!)
       }
     }
@@ -71,7 +71,7 @@ class KonaneModel {
     for square in occupiedSquares {
       direction = directionJumped(from: (origin!.column, origin!.row), destination: (square.column, square.row))
       let (c,r) = jumpCoordinates((square.column, square.row), direction: direction)
-      if !stoneExistsAt((c,r), inBoard: stones) {
+      if withinBoundary(ofBoard: scene.board, forCoord: (c, r)) && !stoneExistsAt((c,r), inBoard: stones) {
         possibleMoves.append((c,r))
       }
     }
@@ -149,9 +149,11 @@ class KonaneModel {
     }
   }
   
-  // STONE REMOVAL PSEUDOCODE
-  // atRiskStones = occupiedSquares (from jumpIsPossible above)
-  // reverseJumpDirection = take jump direction and subtract 1 in the opposite direction
-  // removeStoneAtCoord = function that removes atRiskStone that matches (x,y) in reverseJumpDirection
-
+  func withinBoundary(ofBoard board: Board, forCoord: (c: Int, r: Int)) -> Bool {
+    let (w, h) = board.getBoardSize()
+    if forCoord.c <= w-1 && forCoord.c >= 0 && forCoord.r <= h-1 && forCoord.r >= 0 {
+      return true
+    }
+    return false
+  }
 }
