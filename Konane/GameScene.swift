@@ -21,6 +21,7 @@ class GameScene: SKScene {
   var stoneJumping = false
   var stateLabel: SKLabelNode!
   var turnLabel: SKLabelNode!
+  var firstMove: (Int,Int)!
   
   private var removedStones = 0
   
@@ -32,6 +33,10 @@ class GameScene: SKScene {
     addChild(board)
     placeStartingStones(board.getBoardSize())
     startPlaying()
+  }
+  
+  func numberOfRemovedStones() -> Int {
+    return removedStones
   }
   
   func placeStartingStones(size: (Int,Int)) {

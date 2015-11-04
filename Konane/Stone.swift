@@ -64,14 +64,30 @@ class Stone: SKSpriteNode {
     self.row = location.y
   }
   
+  private func isValidFirstMove() -> Bool {
+    let game = scene as! GameScene
+    return game.numberOfRemovedStones() == 0 && KonaneModel.isValidStart(forCoord: (self.column, self.row))
+  }
+  
+  private func isValidSecondMove() -> Bool {
+    let game = scene as! GameScene
+    return game.numberOfRemovedStones() == 1 && KonaneModel.isAdjacent(firstSpot: game.firstMove, coord2: (self.column, self.row))
+  }
+  
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     // HOW CAN I NOT DIRECTLY REFERENCE THE MODEL HERE? MOVE ALL TO MODEL OR SCENE?
     
     let game = scene as! GameScene
     
     if removingStones && self.stoneColor == game.gameModel.playerTurn {
-      removeStone()
-      game.increaseRemovedStones()
+      if isValidFirstMove() {
+        removeStone()
+        game.increaseRemovedStones()
+        game.firstMove = (self.column, self.row)
+      } else if isValidSecondMove() {
+        removeStone()
+        game.increaseRemovedStones()
+      }
     } else if selectable && self.stoneColor == game.gameModel.playerTurn {
       if game.gameModel.jumpIsPossible(withStone: self, inBoard: game.stones) {
         game.clearSelectedStones()

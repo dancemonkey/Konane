@@ -156,4 +156,21 @@ class KonaneModel {
     }
     return false
   }
+  
+  static func isValidStart(forCoord coord: (c: Int, r: Int)) -> Bool {
+    // HARD-CODING CENTER AND CORNER FOR NOW
+    // EVENTUALLY FIGURE IT OUT BASED ON SIZE OF BOARD
+    let (column, row) = (coord.c, coord.r)
+    let validMoves = [(4,4), (4,5), (5,4), (5,5), (0,0), (0,9),(9,0),(9,9)]
+    return validMoves.contains() { (c,r) in
+      return c == column && r == row
+    }
+  }
+  
+  static func isAdjacent(firstSpot coord1: (c: Int, r: Int), coord2: (c: Int, r: Int)) -> Bool {
+    let adjacentSquares = [(coord1.c, coord1.r+1),(coord1.c, coord1.r-1),(coord1.c+1, coord1.r),(coord1.c-1, coord1.r)]
+    return adjacentSquares.contains() { (c,r) in
+      return c == coord2.c && r == coord2.r
+    }
+  }
 }
