@@ -19,7 +19,7 @@ class GameOver: GKState {
   
   override func didEnterWithPreviousState(previousState: GKState?) {
     if let scene = gameScene {
-      // Perform here the actions that you want to do with your UI when it enters this state.
+      print("game over")
     }
   }
   

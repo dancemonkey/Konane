@@ -23,6 +23,7 @@ class Stone: SKSpriteNode {
   var selectable = false
   var selected = false
   var stoneColor: StoneColor
+  private var jumpDirection: JumpDirections!
   
   init(column: Int, row: Int, stoneColor: StoneColor) {
     self.column = column
@@ -47,6 +48,18 @@ class Stone: SKSpriteNode {
   func removeStone() {
     (scene as! GameScene).stones[self.column][self.row] = nil
     self.removeFromParent()
+  }
+  
+  func setJumpDirection(toDirection: JumpDirections) {
+    self.jumpDirection = toDirection
+  }
+  
+  func getJumpDirection() -> JumpDirections {
+    return self.jumpDirection
+  }
+  
+  func getCoord() -> (c: Int, r: Int) {
+    return (self.column, self.row)
   }
   
   func setPossibleMoves(possibleMoves: [(c:Int, r:Int)]) {

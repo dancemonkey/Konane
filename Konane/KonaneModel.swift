@@ -6,6 +6,9 @@
 //  Copyright © 2015 Drew Lanning. All rights reserved.
 //
 
+// TEACH HOW TO MAKE SEQUENTIAL CAPTURES IN SAME DIRECTION
+// TEACH HOW TO END THE GAME AND DETERMINE WINNER
+
 import Foundation
 import GameplayKit
 
@@ -58,7 +61,8 @@ class KonaneModel {
     
     var occupiedSquares = [Stone]()
     for square in adjacentSquares {
-      if withinBoundary(ofBoard: scene.board, forCoord: (square.column, square.row)) && stoneExistsAt(square, inBoard: stones) {
+      let (c,r) = (square.column, square.row)
+      if withinBoundary(ofBoard: scene.board, forCoord: (square.column, square.row)) && stoneExistsAt((c,r), inBoard: stones) {
         occupiedSquares.append(stones[square.column][square.row]!)
       }
     }
@@ -83,6 +87,27 @@ class KonaneModel {
     self.vulnerableStones = occupiedSquares
     
     return true
+  }
+  
+  func secondJumpIsPossible(direction: JumpDirections, fromCoord: (c: Int, r: Int), inBoard stones: [[Stone?]]) -> Bool {
+    var jumpCoord = fromCoord
+    switch direction {
+    case .North:
+      jumpCoord.r++
+    case .South:
+      jumpCoord.r--
+    case .East:
+      jumpCoord.c++
+    case .West:
+      jumpCoord.c--
+    }
+    if withinBoundary(ofBoard: scene.board, forCoord: jumpCoord) && stoneExistsAt(jumpCoord, inBoard: stones) {
+      let landingCoord = jumpCoordinates(jumpCoord, direction: direction)
+      if withinBoundary(ofBoard: scene.board, forCoord: landingCoord) && !stoneExistsAt(landingCoord, inBoard: stones) {
+        return true
+      }
+    }
+    return false
   }
   
   func findJumpedStone(inGroup adjacentStones: [Stone], withMove move: (c: Int,r: Int)) -> (c: Int, r: Int)? {
@@ -110,8 +135,8 @@ class KonaneModel {
     return vulnerable
   }
   
-  func stoneExistsAt(square: (column: Int, row: Int), inBoard stones: [[Stone?]]) -> Bool {
-    return stones[square.column][square.row] != nil
+  func stoneExistsAt(square: (c: Int, r: Int), inBoard stones: [[Stone?]]) -> Bool {
+    return stones[square.c][square.r] != nil
   }
   
   func directionJumped(from origin: (c: Int, r: Int), destination: (c: Int, r: Int)) -> JumpDirections {
@@ -126,8 +151,8 @@ class KonaneModel {
     }
   }
   
-  func jumpCoordinates(startingCoordinates: (column: Int, row: Int), direction: JumpDirections) -> (c: Int, r: Int) {
-    var (c,r) = (startingCoordinates.column, startingCoordinates.row)
+  func jumpCoordinates(startingCoordinates: (c: Int, r: Int), direction: JumpDirections) -> (c: Int, r: Int) {
+    var (c,r) = (startingCoordinates.c, startingCoordinates.r)
     switch direction {
     case .North:
       r++
@@ -172,5 +197,10 @@ class KonaneModel {
     return adjacentSquares.contains() { (c,r) in
       return c == coord2.c && r == coord2.r
     }
+  }
+  
+  func noPossibleMoves() -> Bool {
+    stateMachine.enterState(GameOver)
+    return false
   }
 }

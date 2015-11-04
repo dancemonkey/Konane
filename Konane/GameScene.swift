@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Drew Lanning. All rights reserved.
 //
 
+// MOVE UI ELEMENTS (LABELS, ETC.) TO GAMEVIEWCONTROLLER
+
 import SpriteKit
 import GameplayKit
 
@@ -178,13 +180,23 @@ class GameScene: SKScene {
           let (column, row) = (Int(dC)/board.gridSize,Int(dR)/board.gridSize)
           stones[column][row] = selectedStone
           selectedStone?.moveStone(toLocation: (column, row), ofNode: destinationNode)
+          let directionJumped = gameModel.directionJumped(from: (oC!, oR!), destination: (column, row))
+          selectedStone?.setJumpDirection(directionJumped)
           
           let takenStone = gameModel.findJumpedStone(inGroup: gameModel.vulnerableStones, withMove: (column, row))
           stones[takenStone!.c][takenStone!.r]?.removeStone()
           
           removeIndicators()
           clearSelectedStones()
+          // if gameModel.noMoreValidMoves {
+          if gameModel.secondJumpIsPossible((selectedStone?.getJumpDirection())!, fromCoord: (selectedStone?.getCoord())!, inBoard: self.stones) {
+            print("another jump possible")
+          }
           gameModel.switchPlayerTurn(from: gameModel.playerTurn)
+          // } else {
+          //   LET THEM TAKE ANOTHER TURN OR CANCEL THEIR TURN
+          //   MOVE ABOVE STONE JUMPING CODE INTO ANOTHER FUNCTION, MAYBE TO MODEL
+          // }
         }
       }
     }
