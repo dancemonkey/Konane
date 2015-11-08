@@ -104,24 +104,7 @@ class KonaneModel {
   }
   
   func secondJumpIsPossible(direction: JumpDirections, fromCoord: (c: Int, r: Int), inBoard stones: [[Stone?]]) -> Bool {
-    var jumpCoord = fromCoord
-    switch direction {
-    case .North:
-      jumpCoord.r++
-    case .South:
-      jumpCoord.r--
-    case .East:
-      jumpCoord.c++
-    case .West:
-      jumpCoord.c--
-    }
-    if withinBoundary(ofBoard: scene.board, forCoord: jumpCoord) && stoneExistsAt(jumpCoord, inBoard: stones) {
-      let landingCoord = jumpCoordinates(jumpCoord, direction: direction)
-      if withinBoundary(ofBoard: scene.board, forCoord: landingCoord) && !stoneExistsAt(landingCoord, inBoard: stones) {
-        return true
-      }
-    }
-    return false
+    return jumpIsPossible(withStone: scene.stones[fromCoord.c][fromCoord.r]!, inBoard: stones, forDirection: direction)
   }
   
   func findJumpedStone(inGroup adjacentStones: [Stone], withMove move: (c: Int,r: Int)) -> (c: Int, r: Int)? {
