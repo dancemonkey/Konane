@@ -18,8 +18,6 @@ class SelectingTilesForRemoval: GKState {
   }
   
   override func didEnterWithPreviousState(previousState: GKState?) {
-    // eventually set this up to only allow you to remove stones in center and at corners
-    // then once each player has removed ONE stone, go to next state (in scene, not here, right?)
     if let scene = gameScene {
       for row in scene.stones {
         for stone in row {

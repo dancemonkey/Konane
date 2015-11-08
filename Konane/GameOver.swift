@@ -20,6 +20,7 @@ class GameOver: GKState {
   override func didEnterWithPreviousState(previousState: GKState?) {
     if let scene = gameScene {
       print("game over")
+      print("\(scene.gameModel.playerTurn) loses.")
     }
   }
   

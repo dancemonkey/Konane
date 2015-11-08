@@ -170,7 +170,7 @@ class GameScene: SKScene {
           }
         }
       }
-      for touch in touches { // MOVE THIS STONE JUMPING LOGIC INTO MODEL?
+      for touch in touches { 
         let (oC, oR) = (selectedStone?.column, selectedStone?.row)
         let location = touch.locationInNode(self)
         let destinationNode = nodeAtPoint(location)
@@ -206,5 +206,6 @@ class GameScene: SKScene {
   }
   
   override func update(currentTime: CFTimeInterval) {
+    
   }
 }

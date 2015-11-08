@@ -7,7 +7,8 @@
 //
 
 // TEACH HOW TO MAKE SEQUENTIAL CAPTURES IN SAME DIRECTION
-// TEACH HOW TO END THE GAME AND DETERMINE WINNER
+// VALIDFIRST MOVE AND VALIDSECOND MOVE SHOULD NOT USE MAGIC NUMBERS, SHOULD CALC BASED ON SIZE OF BOARD
+// PASS FLAG TO JUMPISPOSSIBLE FOR TURNING ON OR OFF JUMP INDICATORS
 
 import Foundation
 import GameplayKit
@@ -175,6 +176,9 @@ class KonaneModel {
     if scene.numberOfRemovedStones() == 2 {
       stateMachine.enterState(JumpingTiles)
     }
+    if !anyMovesLeft() {
+      stateMachine.enterState(GameOver)
+    }
   }
   
   func withinBoundary(ofBoard board: Board, forCoord: (c: Int, r: Int)) -> Bool {
@@ -202,8 +206,17 @@ class KonaneModel {
     }
   }
   
-  func noPossibleMoves() -> Bool {
-    stateMachine.enterState(GameOver)
+  func anyMovesLeft() -> Bool {
+    let currentBoard = scene.stones.flatMap({$0})
+    let currentPlayerStones = currentBoard.filter { stone in
+      stone != nil && stone?.stoneColor == playerTurn
+    }
+    
+    for stone in currentPlayerStones {
+      if jumpIsPossible(withStone: stone!, inBoard: scene.stones) {
+        return true
+      }
+    }
     return false
   }
 }
