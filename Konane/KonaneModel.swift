@@ -49,14 +49,27 @@ class KonaneModel {
     stateMachine.enterState(SelectingTilesForRemoval)
   }
   
-  func jumpIsPossible(withStone stone: Stone, inBoard stones: [[Stone?]]) -> Bool {
+  func jumpIsPossible(withStone stone: Stone, inBoard stones: [[Stone?]], forDirection: JumpDirections?) -> Bool {
     let origin = stones[stone.column][stone.row]
     
     var adjacentSquares = [(column: Int,row: Int)]()
-    adjacentSquares.append((stone.column, stone.row+1)) // North
-    adjacentSquares.append((stone.column, stone.row-1)) // South
-    adjacentSquares.append((stone.column+1, stone.row)) // East
-    adjacentSquares.append((stone.column-1, stone.row)) // West
+    if forDirection == nil {
+      adjacentSquares.append((stone.column, stone.row+1)) // North
+      adjacentSquares.append((stone.column, stone.row-1)) // South
+      adjacentSquares.append((stone.column+1, stone.row)) // East
+      adjacentSquares.append((stone.column-1, stone.row)) // West
+    } else {
+      switch forDirection! {
+      case .North:
+        adjacentSquares.append((stone.column, stone.row+1)) // North
+      case .South:
+        adjacentSquares.append((stone.column, stone.row-1)) // South
+      case .East:
+        adjacentSquares.append((stone.column+1, stone.row)) // East
+      case .West:
+        adjacentSquares.append((stone.column-1, stone.row)) // West
+      }
+    }
     
     scene.removeIndicators()
     
@@ -213,7 +226,7 @@ class KonaneModel {
     }
     
     for stone in currentPlayerStones {
-      if jumpIsPossible(withStone: stone!, inBoard: scene.stones) {
+      if jumpIsPossible(withStone: stone!, inBoard: scene.stones, forDirection: nil) {
         return true
       }
     }
