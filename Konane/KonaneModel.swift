@@ -172,6 +172,9 @@ class KonaneModel {
     } else {
       playerTurn = .Black
     }
+    if scene.numberOfRemovedStones() == 2 {
+      stateMachine.enterState(JumpingTiles)
+    }
   }
   
   func withinBoundary(ofBoard board: Board, forCoord: (c: Int, r: Int)) -> Bool {

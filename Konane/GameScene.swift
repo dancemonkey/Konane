@@ -195,7 +195,8 @@ class GameScene: SKScene {
           gameModel.switchPlayerTurn(from: gameModel.playerTurn)
           // } else {
           //   LET THEM TAKE ANOTHER TURN OR CANCEL THEIR TURN
-          //   MOVE ABOVE STONE JUMPING CODE INTO ANOTHER FUNCTION, MAYBE TO MODEL
+          //   MOVE ABOVE STONE JUMPING CODE INTO ANOTHER FUNCTION, MAYBE TO MODEL, AND MAKE IT RECURSIVE UNTIL IT RETURNS
+          //   FALSE
           // }
         }
       }
@@ -205,8 +206,5 @@ class GameScene: SKScene {
   }
   
   override func update(currentTime: CFTimeInterval) {
-    if removedStones >= 2 {
-      gameModel.stateMachine.enterState(JumpingTiles)
-    }
   }
 }
