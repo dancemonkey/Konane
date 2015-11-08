@@ -163,7 +163,6 @@ class GameScene: SKScene {
     let location = touch.locationInNode(self)
     let destinationNode = nodeAtPoint(location)
     if destinationNode.name == "move indicator" {
-      print(destinationNode.name) 
       let (dC,dR) = (destinationNode.position.x, destinationNode.position.y)
       stones[oC][oR] = nil
       let (column, row) = (Int(dC)/board.gridSize,Int(dR)/board.gridSize)
@@ -175,13 +174,14 @@ class GameScene: SKScene {
       let takenStone = gameModel.findJumpedStone(inGroup: gameModel.vulnerableStones, withMove: (column, row))
       stones[takenStone!.c][takenStone!.r]?.removeStone()
       
-      removeIndicators()
       clearSelectedStones()
       
-      if gameModel.secondJumpIsPossible((onStone.getJumpDirection()), fromCoord: (onStone.getCoord()), inBoard: self.stones) {
-        print("another jump possible")
+      if !gameModel.secondJumpIsPossible((onStone.getJumpDirection())!, fromCoord: (onStone.getCoord()), inBoard: self.stones) {
+        onStone.setJumpDirection(nil)
+        gameModel.switchPlayerTurn(from: gameModel.playerTurn)
+      } else {
+        // LET THE CURRENT PLAYER JUMP AGAIN WITH ONLY THE CURRENT STONE
       }
-      gameModel.switchPlayerTurn(from: gameModel.playerTurn)
     }
   }
   

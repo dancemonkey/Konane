@@ -50,11 +50,11 @@ class Stone: SKSpriteNode {
     self.removeFromParent()
   }
   
-  func setJumpDirection(toDirection: JumpDirections) {
+  func setJumpDirection(toDirection: JumpDirections?) {
     self.jumpDirection = toDirection
   }
   
-  func getJumpDirection() -> JumpDirections {
+  func getJumpDirection() -> JumpDirections? {
     return self.jumpDirection
   }
   
@@ -102,7 +102,7 @@ class Stone: SKSpriteNode {
         game.increaseRemovedStones()
       }
     } else if selectable && self.stoneColor == game.gameModel.playerTurn {
-      if game.gameModel.jumpIsPossible(withStone: self, inBoard: game.stones, forDirection: nil) {
+      if game.gameModel.jumpIsPossible(withStone: self, inBoard: game.stones, forDirection: self.getJumpDirection()) {
         game.clearSelectedStones()
         selected = true
         game.stoneJumping = true
