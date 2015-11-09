@@ -22,6 +22,7 @@
 		106F9A471BDB3A5C0061A59A /* Stone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A461BDB3A5C0061A59A /* Stone.swift */; };
 		106F9A491BDB3E7C0061A59A /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 106F9A481BDB3E7C0061A59A /* tile.png */; };
 		106F9A4D1BDB4C490061A59A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106F9A4C1BDB4C490061A59A /* Board.swift */; };
+		1072050E1BF061280009141E /* ValidMoveIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1072050D1BF061280009141E /* ValidMoveIndicator.swift */; };
 		10C7BCDD1BE321CD0082C349 /* KonaneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C7BCDC1BE321CD0082C349 /* KonaneModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		106F9A461BDB3A5C0061A59A /* Stone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stone.swift; sourceTree = "<group>"; };
 		106F9A481BDB3E7C0061A59A /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = "Game Art/tile.png"; sourceTree = "<group>"; };
 		106F9A4C1BDB4C490061A59A /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Board.swift; path = ../Board.swift; sourceTree = "<group>"; };
+		1072050D1BF061280009141E /* ValidMoveIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidMoveIndicator.swift; sourceTree = "<group>"; };
 		10C7BCDC1BE321CD0082C349 /* KonaneModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KonaneModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,6 +83,7 @@
 				106F9A2F1BDB25240061A59A /* GameScene.sks */,
 				106F9A4C1BDB4C490061A59A /* Board.swift */,
 				106F9A461BDB3A5C0061A59A /* Stone.swift */,
+				1072050D1BF061280009141E /* ValidMoveIndicator.swift */,
 				106F9A311BDB25240061A59A /* GameScene.swift */,
 				10C7BCDC1BE321CD0082C349 /* KonaneModel.swift */,
 				1036108B1BE06A8000E4C146 /* SelectingTilesForRemoval.swift */,
@@ -188,6 +191,7 @@
 				106F9A2E1BDB25240061A59A /* AppDelegate.swift in Sources */,
 				106F9A471BDB3A5C0061A59A /* Stone.swift in Sources */,
 				103610901BE06EFE00E4C146 /* GameOver.swift in Sources */,
+				1072050E1BF061280009141E /* ValidMoveIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,7 +11,7 @@ import SpriteKit
 class Board: SKNode {
   private var width = 10
   private var height = 10
-  let gridSize = 75
+  static let gridSize = 75
   
   override init() {
     super.init()
@@ -27,7 +27,7 @@ class Board: SKNode {
     for w in 0..<width {
       for h in 0..<height {
         let tile = SKSpriteNode(imageNamed: "tile")
-        tile.position = CGPointMake(CGFloat(w*gridSize), CGFloat(h*gridSize))
+        tile.position = CGPointMake(CGFloat(w*Board.gridSize), CGFloat(h*Board.gridSize))
         addChild(tile)
       }
     }

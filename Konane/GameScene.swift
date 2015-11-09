@@ -51,12 +51,14 @@ class GameScene: SKScene {
       for h in 0..<height {
         currentColor = getNextColor(forColor: currentColor)
         let stone = Stone(column: w, row: h, stoneColor: currentColor)
-        let position = CGPointMake(CGFloat(w*board.gridSize),CGFloat(h*board.gridSize))
+        let indicator = ValidMoveIndicator(column: w, row: h, stone: nil)
+        let position = CGPointMake(CGFloat(w*Board.gridSize),CGFloat(h*Board.gridSize))
         stone.position = position
+        indicator.position = position
         stone.zPosition = 15
         addChild(stone)
         stones[w].append(stone)
-        indicators[w].append(createIndicator(position))
+        indicators[w].append(indicator)
       }
     }
   }
@@ -165,7 +167,7 @@ class GameScene: SKScene {
     if destinationNode.name == "move indicator" {
       let (dC,dR) = (destinationNode.position.x, destinationNode.position.y)
       stones[oC][oR] = nil
-      let (column, row) = (Int(dC)/board.gridSize,Int(dR)/board.gridSize)
+      let (column, row) = (Int(dC)/Board.gridSize,Int(dR)/Board.gridSize)
       stones[column][row] = onStone
       onStone.moveStone(toLocation: (column, row), ofNode: destinationNode)
       let directionJumped = gameModel.directionJumped(from: (oC, oR), destination: (column, row))
