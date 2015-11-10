@@ -19,7 +19,7 @@ class GameScene: SKScene {
   let stoneSize = CGSizeMake(70, 70)
   var stones = [[Stone?]]()
   let board = Board()
-  var indicators = [[SKShapeNode]]()
+  var indicators = [[SKSpriteNode]]()
   
   var stoneJumping = false
   var stateLabel: SKLabelNode!
@@ -48,7 +48,7 @@ class GameScene: SKScene {
     for w in 0..<width {
       currentColor = getNextColor(forColor: currentColor)
       stones.append([Stone]())
-      indicators.append([SKShapeNode]())
+      indicators.append([ValidMoveIndicator]())
       for h in 0..<height {
         currentColor = getNextColor(forColor: currentColor)
         let stone = Stone(column: w, row: h, stoneColor: currentColor)

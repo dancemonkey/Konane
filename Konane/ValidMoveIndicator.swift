@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class ValidMoveIndicator: SKShapeNode {
+class ValidMoveIndicator: SKSpriteNode {
   var column: Int
   var row: Int
   var stone: Stone?
@@ -22,16 +22,18 @@ class ValidMoveIndicator: SKShapeNode {
     self.row = row
     self.stone = stone
     let size = CGSizeMake(CGFloat(Board.gridSize), CGFloat(Board.gridSize))
-    super.init()
-    let rect = CGRect(origin: CGPointZero, size: size)
-    strokeColor = UIColor.whiteColor()
-    fillColor = UIColor.redColor()
+    super.init(texture: SKTexture(imageNamed: "tile"), color: UIColor.redColor(), size: size)
+    //let rect = CGRect(origin: CGPointZero, size: size)
+    //strokeColor = UIColor.whiteColor()
+    //fillColor = UIColor.redColor()
     alpha = 0.75
-    lineWidth = 2.0
+    //lineWidth = 2.0
     name = "move indicator"
     zPosition = 15
-    self.path = CGPathCreateWithRect(rect, nil)
+    //self.path = CGPathCreateWithRect(rect, nil)
     self.userInteractionEnabled = true
+    self.color = UIColor.redColor()
+    self.colorBlendFactor = 1.0
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
