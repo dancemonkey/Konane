@@ -19,7 +19,7 @@ class GameScene: SKScene {
   let stoneSize = CGSizeMake(70, 70)
   var stones = [[Stone?]]()
   let board = Board()
-  var indicators = [[SKSpriteNode]]()
+  var indicators = [[ValidMoveIndicator]]()
   
   var stoneJumping = false
   var stateLabel: SKLabelNode!
@@ -90,18 +90,6 @@ class GameScene: SKScene {
     addChild(stateLabel)
   }
   
-  /*func createIndicator(position: CGPoint) -> SKShapeNode {
-    let rect = SKShapeNode(rectOfSize: CGSizeMake(75, 75))
-    rect.strokeColor = UIColor.whiteColor()
-    rect.fillColor = UIColor.redColor()
-    rect.alpha = 0.75
-    rect.lineWidth = 2.0
-    rect.name = "move indicator"
-    rect.position = position
-    rect.zPosition = 15
-    return rect
-  }*/
-  
   func removeIndicators() {
     for row in indicators {
       for dot in row {
@@ -114,7 +102,7 @@ class GameScene: SKScene {
     for move in atSquares {
       let (c,r) = (move.c, move.r)
       addChild(indicators[c][r])
-      (indicators[c][r] as! ValidMoveIndicator).stone = forStone
+      indicators[c][r].stone = forStone
     }
   }
   
