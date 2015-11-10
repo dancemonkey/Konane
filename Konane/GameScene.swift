@@ -7,6 +7,7 @@
 //
 
 // MOVE UI ELEMENTS (LABELS, ETC.) TO GAMEVIEWCONTROLLER?
+// USE TOUCHESBEGAN TO CLEAR FIELD OF SEQUENTIAL JUMP OPTIONS
 
 import SpriteKit
 import GameplayKit
@@ -89,7 +90,7 @@ class GameScene: SKScene {
     addChild(stateLabel)
   }
   
-  func createIndicator(position: CGPoint) -> SKShapeNode {
+  /*func createIndicator(position: CGPoint) -> SKShapeNode {
     let rect = SKShapeNode(rectOfSize: CGSizeMake(75, 75))
     rect.strokeColor = UIColor.whiteColor()
     rect.fillColor = UIColor.redColor()
@@ -99,7 +100,7 @@ class GameScene: SKScene {
     rect.position = position
     rect.zPosition = 15
     return rect
-  }
+  }*/
   
   func removeIndicators() {
     for row in indicators {
@@ -109,10 +110,11 @@ class GameScene: SKScene {
     }
   }
   
-  func placeValidMoveIndicator(atSquares: [(c: Int,r: Int)]) {
+  func placeValidMoveIndicator(atSquares: [(c: Int,r: Int)], forStone: Stone) {
     for move in atSquares {
       let (c,r) = (move.c, move.r)
       addChild(indicators[c][r])
+      (indicators[c][r] as! ValidMoveIndicator).stone = forStone
     }
   }
   
@@ -181,28 +183,11 @@ class GameScene: SKScene {
       if !gameModel.secondJumpIsPossible((onStone.getJumpDirection())!, fromCoord: (onStone.getCoord()), inBoard: self.stones) {
         onStone.setJumpDirection(nil)
         gameModel.switchPlayerTurn(from: gameModel.playerTurn)
-      } else {
-        // LET THE CURRENT PLAYER JUMP AGAIN WITH ONLY THE CURRENT STONE
-      }
+      } 
     }
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    var selectedStone: Stone? = nil
-    
-    if stoneJumping {
-      for row in stones {
-        for stone in row {
-          if stone != nil && stone!.selected {
-            selectedStone = stone!
-            stone!.selected = false
-          }
-        }
-      }
-      for touch in touches {
-        handleJumps(forTouch: touch, onStone: selectedStone!)
-      }
-    }
     clearSelectedStones()
     removeIndicators()
   }

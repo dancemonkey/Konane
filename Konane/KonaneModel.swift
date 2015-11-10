@@ -6,7 +6,7 @@
 //  Copyright © 2015 Drew Lanning. All rights reserved.
 //
 
-// TEACH HOW TO MAKE SEQUENTIAL CAPTURES IN SAME DIRECTION
+// SEQUENTIAL MOVES WORK! JUST NEED TO LET PLAYER CANCEL THEIR SUBSEQUENT MOVES IF THEY WISH
 // VALIDFIRST MOVE AND VALIDSECOND MOVE SHOULD NOT USE MAGIC NUMBERS, SHOULD CALC BASED ON SIZE OF BOARD
 
 import Foundation
@@ -95,7 +95,7 @@ class KonaneModel {
     if possibleMoves.count == 0 {
       return false
     }
-    scene.placeValidMoveIndicator(possibleMoves)
+    scene.placeValidMoveIndicator(possibleMoves, forStone: stone)
     stone.setPossibleMoves(possibleMoves)
     self.vulnerableStones = occupiedSquares
     
@@ -209,6 +209,7 @@ class KonaneModel {
     
     for stone in currentPlayerStones {
       if jumpIsPossible(withStone: stone!, inBoard: scene.stones, forDirection: nil) {
+        scene.removeIndicators()
         return true
       }
     }
