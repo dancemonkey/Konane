@@ -25,6 +25,11 @@ class GameScene: SKScene {
   var stateLabel: SKLabelNode!
   var turnLabel: SKLabelNode!
   var firstMove: (Int,Int)!
+  var seqJump = false {
+    didSet {
+      print("sequential jump mode!!")
+    }
+  }
   
   private var removedStones = 0
   
@@ -151,6 +156,11 @@ class GameScene: SKScene {
   }
   
   func handleJumps(forTouch touch: UITouch, onStone: Stone) {
+    if (scene as! GameScene).seqJump {
+      seqJump = false
+      clearSelectedStones()
+    }
+    
     let (oC, oR) = (onStone.column, onStone.row)
     let location = touch.locationInNode(self)
     let destinationNode = nodeAtPoint(location)
@@ -165,18 +175,17 @@ class GameScene: SKScene {
       
       let takenStone = gameModel.findJumpedStone(inGroup: gameModel.vulnerableStones, withMove: (column, row))
       stones[takenStone!.c][takenStone!.r]?.removeStone()
-      
-      clearSelectedStones()
-      
+            
       if !gameModel.secondJumpIsPossible((onStone.getJumpDirection())!, fromCoord: (onStone.getCoord()), inBoard: self.stones) {
         onStone.setJumpDirection(nil)
         gameModel.switchPlayerTurn(from: gameModel.playerTurn)
-      } 
+      } else if gameModel.secondJumpIsPossible((onStone.getJumpDirection())!, fromCoord: (onStone.getCoord()), inBoard: self.stones) {
+        seqJump = true
+      }
     }
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    clearSelectedStones()
     removeIndicators()
   }
 

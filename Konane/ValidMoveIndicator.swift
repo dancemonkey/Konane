@@ -23,14 +23,9 @@ class ValidMoveIndicator: SKSpriteNode {
     self.stone = stone
     let size = CGSizeMake(CGFloat(Board.gridSize), CGFloat(Board.gridSize))
     super.init(texture: SKTexture(imageNamed: "tile"), color: UIColor.redColor(), size: size)
-    //let rect = CGRect(origin: CGPointZero, size: size)
-    //strokeColor = UIColor.whiteColor()
-    //fillColor = UIColor.redColor()
     alpha = 0.75
-    //lineWidth = 2.0
     name = "move indicator"
     zPosition = 15
-    //self.path = CGPathCreateWithRect(rect, nil)
     self.userInteractionEnabled = true
     self.color = UIColor.redColor()
     self.colorBlendFactor = 1.0
@@ -39,7 +34,9 @@ class ValidMoveIndicator: SKSpriteNode {
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     let scene = (self.scene as! GameScene)
     for touch in touches {
-      scene.handleJumps(forTouch: touch, onStone: self.stone!)
+      if self.stone!.selected {
+        scene.handleJumps(forTouch: touch, onStone: self.stone!)
+      }
     }
   }
 }

@@ -7,6 +7,7 @@
 //
 
 // SEQUENTIAL MOVES WORK! JUST NEED TO LET PLAYER CANCEL THEIR SUBSEQUENT MOVES IF THEY WISH
+// ALSO NEED TO NOT SHOW INDICATOR FOR WRONG STONE IF IN THE MIDDLE OF A SEQUENTIAL MOVE
 // VALIDFIRST MOVE AND VALIDSECOND MOVE SHOULD NOT USE MAGIC NUMBERS, SHOULD CALC BASED ON SIZE OF BOARD
 
 import Foundation
@@ -103,6 +104,7 @@ class KonaneModel {
   }
   
   func secondJumpIsPossible(direction: JumpDirections, fromCoord: (c: Int, r: Int), inBoard stones: [[Stone?]]) -> Bool {
+    scene.stones[fromCoord.c][fromCoord.r]?.selected = true
     return jumpIsPossible(withStone: scene.stones[fromCoord.c][fromCoord.r]!, inBoard: stones, forDirection: direction)
   }
   

@@ -102,9 +102,11 @@ class Stone: SKSpriteNode {
       }
     } else if selectable && self.stoneColor == game.gameModel.playerTurn {
       if game.gameModel.jumpIsPossible(withStone: self, inBoard: game.stones, forDirection: self.getJumpDirection()) {
-        game.clearSelectedStones()
-        selected = true
-        game.stoneJumping = true
+        if !game.seqJump {
+          game.clearSelectedStones()
+          selected = true
+          game.stoneJumping = true
+        }
       }
     } else if self.stoneColor != game.gameModel.playerTurn {
       game.clearSelectedStones()
