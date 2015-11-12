@@ -7,7 +7,6 @@
 //
 
 // MOVE UI ELEMENTS (LABELS, ETC.) TO GAMEVIEWCONTROLLER?
-// USE TOUCHESBEGAN TO CLEAR FIELD OF SEQUENTIAL JUMP OPTIONS
 
 import SpriteKit
 import GameplayKit
@@ -187,6 +186,12 @@ class GameScene: SKScene {
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     removeIndicators()
+    if seqJump {
+      seqJump = false
+      removeIndicators()
+      clearSelectedStones()
+      gameModel.switchPlayerTurn(from: gameModel.playerTurn)
+    }
   }
 
   override func update(currentTime: CFTimeInterval) {
